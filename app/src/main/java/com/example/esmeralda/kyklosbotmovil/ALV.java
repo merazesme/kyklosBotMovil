@@ -9,5 +9,6 @@ public class ALV extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alv);
+        //ALFIN ALVVVVVVVVVVV
     }
 }
