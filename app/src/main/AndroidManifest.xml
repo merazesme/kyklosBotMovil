@@ -3,6 +3,8 @@
     package="com.example.esmeralda.kyklosbotmovil">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -11,17 +13,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".cupones" />
         <activity android:name=".misCupones" />
         <activity android:name=".historialPuntosObtenidos" />
-        <activity android:name=".historialPuntosCanjeados"></activity>
+        <activity android:name=".historialPuntosCanjeados" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCLVRslsyel5Xn1jl0Dv7kReLmdHmc21kU" />
+
+        <activity
+            android:name=".Registro"
+            android:label="REGISTRATE">
+        </activity>
+        <activity
+            android:name=".Ubicacion"
+            android:label="Map">
+        </activity>
     </application>
 
 </manifest>

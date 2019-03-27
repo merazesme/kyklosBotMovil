@@ -13,4 +13,7 @@
         android:icon="@mipmap/dulces_circle"
         android:title="Menu principal"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/Ubicacion"
+        android:title="Ver ubicaciones de KyKlos bot" />
 </menu>

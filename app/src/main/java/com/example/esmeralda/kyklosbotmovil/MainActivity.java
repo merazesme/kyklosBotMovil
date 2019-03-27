@@ -60,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
             {
                 Intent pantallaPrincipal = new Intent(this, MainActivity.class);
                 startActivity(pantallaPrincipal);
+            }else if (id == R.id.Ubicacion){
+                Intent pantallaUbicacion = new Intent(this, Ubicacion.class);
+                startActivity(pantallaUbicacion);
             }
 
         } catch (Exception e) {
