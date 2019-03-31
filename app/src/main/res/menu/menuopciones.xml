@@ -10,7 +10,7 @@
         android:title="Historial puntos canjeados" />
     <item
         android:id="@+id/menuPrincipal"
-        android:icon="@mipmap/dulces_circle"
+        android:icon="@mipmap/home_none"
         android:title="Menu principal"
         app:showAsAction="always" />
 </menu>

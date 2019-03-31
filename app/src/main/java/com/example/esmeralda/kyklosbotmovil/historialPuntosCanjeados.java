@@ -1,7 +1,12 @@
 package com.example.esmeralda.kyklosbotmovil;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -35,19 +40,44 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class historialPuntosCanjeados extends AppCompatActivity {
+
     GridLayout cuerpo;
+    ImageView loadingView;
+    AnimationDrawable loadingAnimation;
+    ImageView noInternet;
+    ConnectivityManager con;
+    NetworkInfo networkInfo;
+    ScrollView base;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial_puntos_canjeados);
-        pantalla();
+        //Loading gif
+        loadingView = (ImageView)findViewById(R.id.loadingView);
+        loadingAnimation = (AnimationDrawable)loadingView.getDrawable();
+        //Internet
+        noInternet = (ImageView)findViewById(R.id.noInternet);
+        noInternet.setVisibility(View.INVISIBLE);
+
+        //CHECAR LA CONEXION A INTERNET
+        con = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        networkInfo = con.getActiveNetworkInfo();
+        //ELEMENTOS DE LA VISTA
+        base = (ScrollView)findViewById(R.id.viewScroll);
+
+        //PROCESO EN SEGUNDO PLANO
+        new procesoCargarPantalla().execute();
     }
+
+    //CARGAR MENU '...'
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menuopciones, menu);
         return true;
     }
 
+    //OPCIONES DEL MENU '...'
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         try {
@@ -56,17 +86,18 @@ public class historialPuntosCanjeados extends AppCompatActivity {
             if (id==R.id.hPuntosObtenidos)
             {
                 Intent pantallahPuntosObtenidos = new Intent(this, historialPuntosObtenidos.class);
+                finish();
                 startActivity(pantallahPuntosObtenidos);
             }
             else if (id == R.id.hPuntosCanjeados)
             {
                 Intent pantallahPuntosCanjeados = new Intent(this, historialPuntosCanjeados.class);
+                finish();
                 startActivity(pantallahPuntosCanjeados);
             }
             else if (id == R.id.menuPrincipal)
             {
-                Intent pantallaPrincipal = new Intent(this, MainActivity.class);
-                startActivity(pantallaPrincipal);
+                finish();
             }
 
         } catch (Exception e) {
@@ -75,11 +106,52 @@ public class historialPuntosCanjeados extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void pantalla()
+    //CLASE PARA EJECUTAR SPINNER MIENTRAS SE CARGA LA VISTA
+    class procesoCargarPantalla extends AsyncTask<Void, Void, Boolean> {
+        LinearLayout contenidoPantalla;
+
+        @Override
+        protected void onPreExecute() {
+            try {
+                loadingAnimation.start();
+            } catch (Exception e) {
+                Toast.makeText(historialPuntosCanjeados.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                contenidoPantalla=pantalla();
+            } catch (Exception e) {
+                Toast.makeText(historialPuntosCanjeados.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result){
+            try {
+                if(networkInfo!=null && networkInfo.isConnected())
+                {
+                    loadingAnimation.stop();
+                    noInternet.setVisibility(View.GONE);
+                    //loadingView.setVisibility(View.INVISIBLE);
+                    base.addView(contenidoPantalla);
+                }else{
+                    loadingAnimation.stop();
+                    loadingView.setVisibility(View.INVISIBLE);
+                    noInternet.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
+                Toast.makeText(historialPuntosCanjeados.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    //CONEXION A LA BD MEDIANTE WEB SERVICE: HISTORIAL - OBTENER LOS PUNTOS QUE EL USUARIO HA CANJEADO
+    public LinearLayout pantalla()
     {
-
-        //DIBUJAR PANTALLA
-
         //BASE PRINCIPAL
         ScrollView scrollView = new ScrollView(getApplicationContext());
 
@@ -237,12 +309,14 @@ public class historialPuntosCanjeados extends AppCompatActivity {
 
         //AGREGAR EL CUERPO A LA BASE SECUNDARIA
         contenedor.addView(cuerpo);
+
+        return contenedor;
         //AGREGAR BASE SECUNDARIA A LA BASE PRINCIPAL
-        scrollView.addView(contenedor);
+        //scrollView.addView(contenedor);
 
         //AGREGAR LA BASE PRINCIPAL A LA PANTALLA
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        addContentView(scrollView, params);
+        //FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        //addContentView(scrollView, params);
 
     }
 }

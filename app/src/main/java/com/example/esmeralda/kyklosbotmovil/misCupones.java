@@ -1,9 +1,12 @@
 package com.example.esmeralda.kyklosbotmovil;
 
-import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.AnimationDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -12,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -35,23 +37,52 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class misCupones extends AppCompatActivity {
 
     GridLayout cuerpo;
+    ConnectivityManager con;
+    NetworkInfo networkInfo;
+    ImageView noInternet;
+    ImageView loadingView;
+    AnimationDrawable loadingAnimation;
+    ScrollView base;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mis_cupones);
-        pantalla();
+
+        //Loading gif
+        loadingView = (ImageView)findViewById(R.id.loadingView);
+        loadingAnimation = (AnimationDrawable)loadingView.getDrawable();
+        //Internet
+        noInternet = (ImageView)findViewById(R.id.noInternet);
+        noInternet.setVisibility(View.INVISIBLE);
+
+        //CHECAR LA CONEXION A INTERNET
+        con = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        networkInfo = con.getActiveNetworkInfo();
+
+        //ELEMENTOS DE LA VISTA
+        base = (ScrollView)findViewById(R.id.viewScroll);
+
+        //PROCESO EN SEGUNDO PLANO
+        new procesoCargarPantalla().execute();
     }
+
+    //CARGAR MENU '...'
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menuopciones, menu);
+
+
         return true;
     }
 
+    //OPCIONES DEL MENU '...'
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         try {
@@ -60,17 +91,18 @@ public class misCupones extends AppCompatActivity {
             if (id==R.id.hPuntosObtenidos)
             {
                 Intent pantallahPuntosObtenidos = new Intent(this, historialPuntosObtenidos.class);
+                finish();
                 startActivity(pantallahPuntosObtenidos);
             }
             else if (id == R.id.hPuntosCanjeados)
             {
                 Intent pantallahPuntosCanjeados = new Intent(this, historialPuntosCanjeados.class);
+                finish();
                 startActivity(pantallahPuntosCanjeados);
             }
             else if (id == R.id.menuPrincipal)
             {
-                Intent pantallaPrincipal = new Intent(this, MainActivity.class);
-                startActivity(pantallaPrincipal);
+                finish();
             }
 
         } catch (Exception e) {
@@ -78,10 +110,53 @@ public class misCupones extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    public void pantalla()
-    {
-        //PANTALA MIS CUPONES
 
+    //CLASE PARA EJECUTAR SPINNER MIENTRAS SE CARGA LA VISTA
+    class procesoCargarPantalla extends AsyncTask<Void, Void, Boolean> {
+        LinearLayout contenidoPantalla;
+
+        @Override
+        protected void onPreExecute() {
+            try {
+                loadingAnimation.start();
+            } catch (Exception e) {
+                Toast.makeText(misCupones.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                contenidoPantalla=pantalla();
+            } catch (Exception e) {
+                Toast.makeText(misCupones.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result){
+            try {
+                if(networkInfo!=null && networkInfo.isConnected())
+                {
+                    loadingAnimation.stop();
+                    noInternet.setVisibility(View.GONE);
+                    //loadingView.setVisibility(View.INVISIBLE);
+                    base.addView(contenidoPantalla);
+                }else{
+                    loadingAnimation.stop();
+                    loadingView.setVisibility(View.INVISIBLE);
+                    noInternet.setVisibility(View.VISIBLE);
+                }
+            } catch (Exception e) {
+                Toast.makeText(misCupones.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    //CONEXION A LA BD MEDIANTE WEB SERVICE: OBTENER CUPONES DEL USUARIO
+    public LinearLayout pantalla()
+    {
         //DIBUJAR PANTALLA
 
         //BASE PRINCIPAL
@@ -138,6 +213,7 @@ public class misCupones extends AppCompatActivity {
                                 String premio = myJsonObject.getString("Nombre");
                                 String categoria = myJsonObject.getString("Titulo");
                                 String fechaExp = myJsonObject.getString("FechaExp");
+                                String idCategoria = myJsonObject.getString("idCategoria");
 
                                 //CREAR CARTAS
                                 CardView carta = new CardView(getApplicationContext());
@@ -158,8 +234,19 @@ public class misCupones extends AppCompatActivity {
 
                                 //IMAGEN
                                 ImageView imagen = new ImageView(getApplicationContext());
-                                imagen.setImageResource(R.mipmap.cupon_tallrect);
-                                FrameLayout.LayoutParams margenImagen = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.MATCH_PARENT);
+                                switch (Integer.parseInt(idCategoria))
+                                {
+                                    case 1: //dulceria
+                                        imagen.setImageResource(R.drawable.dulceria);
+                                        break;
+                                    case 2: //taquilla
+                                        imagen.setImageResource(R.drawable.taquilla);
+                                        break;
+                                    case 3: //multiple
+                                        imagen.setImageResource(R.drawable.multiple);
+                                        break;
+                                }
+                                FrameLayout.LayoutParams margenImagen = new FrameLayout.LayoutParams(150, 150);
                                 margenImagen.setMargins(0,30,0,40);
                                 imagen.setLayoutParams(margenImagen);
 
@@ -168,7 +255,7 @@ public class misCupones extends AppCompatActivity {
                                 contenedorTextoCarta.setOrientation(LinearLayout.VERTICAL);
                                 contenedorCarta.setPadding(20,0,20,0);
                                 FrameLayout.LayoutParams margenTexto = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-                                margenTexto.setMargins(150,30,0,40);
+                                margenTexto.setMargins(170,30,0,40);
                                 contenedorTextoCarta.setLayoutParams(margenTexto);
 
                                 //TITULO DE LA CARTA
@@ -180,12 +267,42 @@ public class misCupones extends AppCompatActivity {
                                 //FECHA DE EXPIRACION DEL CUPON
                                 SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yy");
                                 SimpleDateFormat parseador = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
                                 TextView txtFechaExp = new TextView(getApplicationContext());
+                                TextView txtDiasRestantes = new TextView(getApplicationContext());
                                 try {
-                                    Date date = parseador.parse(fechaExp);
-                                    txtFechaExp.setTextColor(Color.RED);
-                                    txtFechaExp.setTextSize(12);
-                                    txtFechaExp.setText(formateador.format(date));
+                                    //FECHA DE EXPIRACION
+
+                                    SimpleDateFormat fechaExpFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                                    //OBTENER LA FECHA ACTUAL
+                                    Calendar fechaActual = Calendar.getInstance();
+                                    int anio = fechaActual.get(Calendar.YEAR);
+                                    int mes = fechaActual.get(Calendar.MONTH)+1;
+                                    int dia = fechaActual.get(Calendar.DAY_OF_MONTH);
+                                    String hoy = String.valueOf(anio)+"-"+String.valueOf(mes)+"-"+String.valueOf(dia);
+                                    Date fechaInicial=fechaExpFormat.parse(hoy);
+
+                                    //PASAR A FORMATO DATE LA FECHA DE EXPIRACION
+                                    Date fechaFinal=fechaExpFormat.parse(fechaExp);
+
+                                    //CALCULAR DIAS DE DIFERENCIA
+                                    int diasRestantes=(int) ((fechaFinal.getTime()-fechaInicial.getTime())/86400000);
+
+                                    //DARLE FORMATO A LA FECHA DE EXPIRACION
+                                    txtFechaExp.setTextSize(13);
+                                    if (diasRestantes<=2)
+                                        txtFechaExp.setTextColor(getResources().getColor(R.color.colorAccent));
+                                    else if (diasRestantes>2 && diasRestantes<=8)
+                                        txtFechaExp.setTextColor(getResources().getColor(R.color.colorYellowAccent));
+                                    else if (diasRestantes>8)
+                                        txtFechaExp.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+
+                                    txtFechaExp.setText(formateador.format(fechaFinal));
+
+                                    //MOSTRAR LOS DIAS HABILES RESTANTES DEL CUPÓN
+                                    txtDiasRestantes.setText(diasRestantes + " días para que expire el cupón");
+
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                     Toast.makeText(misCupones.this, "Error al obtener fecha de expiración", Toast.LENGTH_SHORT).show();
@@ -197,6 +314,8 @@ public class misCupones extends AppCompatActivity {
                                 contenedorTextoCarta.addView(txtTitulo);
                                 //AGREGAR FECHA DE EXPIRACIÓN A LA BASE DEL TEXTO DE LA CARTA
                                 contenedorTextoCarta.addView(txtFechaExp);
+                                //AGREGAR DIAS RESTANTES DE EXPIRACIÓN A LA BASE DEL TEXTO DE LA CARTA
+                                contenedorTextoCarta.addView(txtDiasRestantes);
                                 //AGREGAR BASE DEL TEXTO DE LA CARTA A LA CARTA
                                 contenedorCarta.addView(contenedorTextoCarta);
                                 //AGREGAR EL CONTENIDO A LA CARTA
@@ -223,12 +342,13 @@ public class misCupones extends AppCompatActivity {
 
         //AGREGAR EL CUERPO A LA BASE SECUNDARIA
         contenedor.addView(cuerpo);
+        return contenedor;
         //AGREGAR BASE SECUNDARIA A LA BASE PRINCIPAL
-        scrollView.addView(contenedor);
+        //scrollView.addView(contenedor);
 
         //AGREGAR LA BASE PRINCIPAL A LA PANTALLA
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        addContentView(scrollView, params);
+        //FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        //addContentView(scrollView, params);
 
     }
 }

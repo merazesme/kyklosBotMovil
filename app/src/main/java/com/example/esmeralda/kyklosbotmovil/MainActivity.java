@@ -56,11 +56,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent pantallahPuntosCanjeados = new Intent(this, historialPuntosCanjeados.class);
                 startActivity(pantallahPuntosCanjeados);
             }
-            else if (id == R.id.menuPrincipal)
-            {
-                Intent pantallaPrincipal = new Intent(this, MainActivity.class);
-                startActivity(pantallaPrincipal);
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
