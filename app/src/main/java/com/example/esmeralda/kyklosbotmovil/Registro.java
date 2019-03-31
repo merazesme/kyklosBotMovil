@@ -88,7 +88,7 @@ public class Registro extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Ha ocurrido un error " + error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
                     }
                 }) {
                     @Override
@@ -110,7 +110,7 @@ public class Registro extends AppCompatActivity {
                 requestQueue.add(stringRequest);
             }else{
                 Toast.makeText(getApplicationContext(), "Llene todo los campos", Toast.LENGTH_SHORT).show();
-                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

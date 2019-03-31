@@ -32,6 +32,7 @@ public class LoginActivity extends Activity {
     public static String idUsuario;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         final Context context = this;
         setContentView(R.layout.activity_login);
@@ -65,18 +66,24 @@ public class LoginActivity extends Activity {
                         if (response.trim().equals("no")) {
                             Toast.makeText(getApplicationContext(), "Usuario/Contraseña incorrectos", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(getApplicationContext(), "Iniciar sesión", Toast.LENGTH_SHORT).show();
-                            bandera = 1;
-                            Intent intent = new Intent(context, MainActivity.class);
-                            startActivity(intent);
-                            idUsuario = response.trim();
-                            Toast.makeText(getApplicationContext(), "idUsuario " + idUsuario, Toast.LENGTH_SHORT).show();
+                            if (response.trim().equals("bloqueado")){
+                                Toast.makeText(getApplicationContext(), "Este usuario ha sido bloqueado", Toast.LENGTH_SHORT).show();
+                            }else{
+                                idUsuario = response;
+                                //Toast.makeText(getApplicationContext(), "Id " + idUsuario, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(), "Iniciar sesión", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(context, MainActivity.class);
+                                startActivity(intent);
+                                //String[] cadenas = response.split("\\.");
+                                //String id = cadenas[0];
+                                //String status = cadenas[1];
+                            }
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Ha ocurrido un error " + error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
                     }
                 }) {
                     @Override
@@ -88,25 +95,9 @@ public class LoginActivity extends Activity {
                     }
                 };
                 requestQueue.add(stringRequest);
-        }else{
+            }else{
                 Toast.makeText(getApplicationContext(), "Llene todo los campos", Toast.LENGTH_SHORT).show();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public void Inicio(View view){
-        try {
-            Intent mapa = new Intent(this,Ubicacion.class);
-            startActivity(mapa);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public void Registro(View view){
-        try {
-            Intent mapa = new Intent(this,Registro.class);
-            startActivity(mapa);
         } catch (Exception e) {
             e.printStackTrace();
         }
