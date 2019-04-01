@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -24,8 +25,6 @@ import com.android.volley.toolbox.Volley;
 import com.felipecsl.gifimageview.library.GifImageView;
 
 import org.apache.commons.io.IOUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +43,7 @@ public class LoginActivity extends Activity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         final Context context = this;
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         getWindow().setBackgroundDrawableResource(R.drawable.background);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -65,6 +64,13 @@ public class LoginActivity extends Activity {
 
         gifImageView = (GifImageView)findViewById(R.id.gifImageView);
         gifImageView2 = (GifImageView)findViewById(R.id.gifImageView);
+
+        SharedPreferences prefs = getSharedPreferences("login",Context.MODE_PRIVATE);
+        String id = prefs.getString("id", "");
+        if (id.length() != 0){
+            Intent intent = new Intent(context, Ubicacion.class);
+            startActivity(intent);
+        }
 
 
         iniciar.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +164,11 @@ public class LoginActivity extends Activity {
                                     nuevo.setVisibility(View.VISIBLE);
                                     sesion.setVisibility(View.VISIBLE);
                                     idUsuario = response;
-                                    Intent intent = new Intent(context, Ubicacion.class);
+                                    SharedPreferences prefs = getSharedPreferences("login",Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = prefs.edit();
+                                    editor.putString("id", idUsuario);
+                                    editor.commit();
+                                    Intent intent = new Intent(context, MainActivity.class);
                                     startActivity(intent);
                                 }
                             }
