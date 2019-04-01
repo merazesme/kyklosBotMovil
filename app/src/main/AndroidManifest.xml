@@ -14,25 +14,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<<<<<<< HEAD
-=======
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity"
+            android:theme="@style/SplashTheme">>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
->>>>>>> parent of fc4f385... jesus
         <activity android:name=".MainActivity" />
         <activity android:name=".cupones" />
         <activity android:name=".misCupones" />
         <activity android:name=".historialPuntosObtenidos" />
         <activity android:name=".historialPuntosCanjeados" />
+        <activity
+            android:name=".Registro"
+            android:label="REGISTRATE">
+        </activity>
+        <activity
+            android:name=".Ubicacion"
+            android:label="Map">
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCLVRslsyel5Xn1jl0Dv7kReLmdHmc21kU" />
+            android:value="AIzaSyBS1Ay_LSabB9IOx6oqBJ7SBAb9WaD5PFk" />
 
     </application>
 
