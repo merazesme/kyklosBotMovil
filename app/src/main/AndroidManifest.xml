@@ -14,8 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity"
-            android:theme="@style/SplashTheme">>
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/SplashTheme">
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,17 +31,16 @@
         <activity android:name=".historialPuntosCanjeados" />
         <activity
             android:name=".Registro"
-            android:label="REGISTRATE">
-        </activity>
+            android:label="REGISTRATE"></activity>
         <activity
             android:name=".Ubicacion"
-            android:label="Map">
-        </activity>
+            android:label="Map"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBS1Ay_LSabB9IOx6oqBJ7SBAb9WaD5PFk" />
 
+        <activity android:name=".howTo"></activity>
     </application>
 
 </manifest>

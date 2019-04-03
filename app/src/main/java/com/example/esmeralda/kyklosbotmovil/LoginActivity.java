@@ -129,7 +129,6 @@ public class LoginActivity extends Activity {
         iniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 iniciarSesion(context);
             }
         });
@@ -143,7 +142,7 @@ public class LoginActivity extends Activity {
                 if(User.length() != 0 && Contraa.length() != 0){
                     if (banderaUsuario == 1 && banderaContra == 1) {
                         banderaContra = 0; banderaUsuario = 0;
-                        try{
+                        try {
                             InputStream inputStream = getAssets().open("loading.gif");
                             byte[] bytes = IOUtils.toByteArray(inputStream);
                             gifImageView.setBytes(bytes);
@@ -160,9 +159,7 @@ public class LoginActivity extends Activity {
                             texto.setVisibility(View.INVISIBLE);
                             nuevo.setVisibility(View.INVISIBLE);
                             sesion.setVisibility(View.INVISIBLE);
-                        }
-                        catch (IOException ex)
-                        {
+                        } catch (IOException ex) {
 
                         }
                         String url = "http://tunas.mztzone.com/tunas/apiJesus/login/ad";
@@ -188,7 +185,7 @@ public class LoginActivity extends Activity {
                                     Toast.makeText(getApplicationContext(), "Usuario/Contraseña incorrectos", Toast.LENGTH_SHORT).show();
                                     contra.setText("");
                                 } else {
-                                    if (response.trim().equals("bloqueado")){
+                                    if (response.trim().equals("bloqueado")) {
                                         //hidePDialog();
                                         gifImageView.stopAnimation();
                                         gifImageView.setVisibility(View.INVISIBLE);
@@ -204,7 +201,7 @@ public class LoginActivity extends Activity {
                                         nuevo.setVisibility(View.VISIBLE);
                                         sesion.setVisibility(View.VISIBLE);
                                         Toast.makeText(getApplicationContext(), "Este usuario ha sido bloqueado", Toast.LENGTH_SHORT).show();
-                                    }else{
+                                    } else {
                                         //hidePDialog();
                                         gifImageView.stopAnimation();
                                         gifImageView.setVisibility(View.INVISIBLE);
@@ -220,13 +217,14 @@ public class LoginActivity extends Activity {
                                         nuevo.setVisibility(View.VISIBLE);
                                         sesion.setVisibility(View.VISIBLE);
                                         idUsuario = response;
-                                        SharedPreferences prefs = getSharedPreferences("login",Context.MODE_PRIVATE);
+                                        SharedPreferences prefs = getSharedPreferences("login", Context.MODE_PRIVATE);
                                         SharedPreferences.Editor editor = prefs.edit();
                                         editor.putString("id", idUsuario);
                                         editor.commit();
                                         Intent intent = new Intent(context, MainActivity.class);
-                                        //finish();
+                                        finish();
                                         startActivity(intent);
+
                                     }
                                 }
                             }
@@ -260,7 +258,7 @@ public class LoginActivity extends Activity {
                         };
                         requestQueue.add(stringRequest);
                     }else{
-                        Toast.makeText(getApplicationContext(), "Formatos inválidos", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Formatos invalidos", Toast.LENGTH_SHORT).show();
                         banderaContra = 0; banderaUsuario = 0;
                     }
                 }else{

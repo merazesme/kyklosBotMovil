@@ -9,6 +9,9 @@
         android:id="@+id/hPuntosCanjeados"
         android:title="Historial puntos canjeados" />
     <item
+        android:id="@+id/info"
+        android:title="Kyklos Bot" />
+    <item
         android:id="@+id/menuPrincipal"
         android:icon="@mipmap/home_none"
         android:title="Menu principal"

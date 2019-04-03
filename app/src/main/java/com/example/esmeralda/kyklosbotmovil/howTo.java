@@ -1,53 +1,38 @@
 package com.example.esmeralda.kyklosbotmovil;
 
 import android.content.Intent;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.LinearLayout;
 
-public class MainActivity extends AppCompatActivity {
+public class howTo extends AppCompatActivity {
 
-    CardView verCupones;
-    CardView misCupones;
+    private ViewPager canvaImagenes;
+    private LinearLayout dots;
+    private  sliderAdapter sliderAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_how_to);
 
+        canvaImagenes = (ViewPager)findViewById(R.id.viewImages);
+        dots = (LinearLayout)findViewById(R.id.dots);
 
-        CardView verCupones = (CardView)findViewById(R.id.irVerCupones);
-        CardView misCupones = (CardView)findViewById(R.id.irMisCupones);
-        CardView info = (CardView)findViewById(R.id.irInformacion);
+        sliderAdapter = new sliderAdapter(this);
+        canvaImagenes.setAdapter(sliderAdapter);
+    }
 
-        verCupones = (CardView)findViewById(R.id.irVerCupones);
-        misCupones = (CardView)findViewById(R.id.irMisCupones);
-
-        verCupones.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent pantallaVerCupones = new Intent(getApplicationContext(), cupones.class);
-                startActivity(pantallaVerCupones);
-            }
-        });
-
-        misCupones.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent pantallaMisCupones = new Intent(getApplicationContext(), misCupones.class);
-                startActivity(pantallaMisCupones);
-            }
-
-        });
-
+    //CARGAR MENU '...'
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menuopciones, menu);
         return true;
     }
 
+    //OPCIONES DEL MENU '...'
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         try {
@@ -56,12 +41,18 @@ public class MainActivity extends AppCompatActivity {
             if (id==R.id.hPuntosObtenidos)
             {
                 Intent pantallahPuntosObtenidos = new Intent(this, historialPuntosObtenidos.class);
+                finish();
                 startActivity(pantallahPuntosObtenidos);
             }
             else if (id == R.id.hPuntosCanjeados)
             {
                 Intent pantallahPuntosCanjeados = new Intent(this, historialPuntosCanjeados.class);
+                finish();
                 startActivity(pantallahPuntosCanjeados);
+            }
+            else if (id == R.id.menuPrincipal)
+            {
+                finish();
             }
 
         } catch (Exception e) {

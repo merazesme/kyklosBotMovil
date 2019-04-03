@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -30,11 +31,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.felipecsl.gifimageview.library.GifImageView;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,23 +49,23 @@ public class historialPuntosObtenidos extends AppCompatActivity {
 
     GridLayout cuerpo;
     ImageView loadingView;
-    AnimationDrawable loadingAnimation;
     ImageView noInternet;
     ConnectivityManager con;
     NetworkInfo networkInfo;
     ScrollView base;
+    private GifImageView gifLoading;
+    private Button btnConectarInter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial_puntos_obtenidos);
 
-        //Loading gif
-        loadingView = (ImageView)findViewById(R.id.loadingView);
-        loadingAnimation = (AnimationDrawable)loadingView.getDrawable();
         //Internet
         noInternet = (ImageView)findViewById(R.id.noInternet);
         noInternet.setVisibility(View.INVISIBLE);
+        btnConectarInter = (Button)findViewById(R.id.btnConectar);
 
         //CHECAR LA CONEXION A INTERNET
         con = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -68,8 +73,9 @@ public class historialPuntosObtenidos extends AppCompatActivity {
         //ELEMENTOS DE LA VISTA
         base = (ScrollView)findViewById(R.id.viewScroll);
 
-        //PROCESO EN SEGUNDO PLANO
-        new procesoCargarPantalla().execute();
+        gifLoading = (GifImageView)findViewById(R.id.gifImageView);
+
+        conectarInternet(null);
 
     }
 
@@ -109,52 +115,41 @@ public class historialPuntosObtenidos extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //CLASE PARA EJECUTAR SPINNER MIENTRAS SE CARGA LA VISTA
-    class procesoCargarPantalla extends AsyncTask<Void, Void, Boolean> {
-        LinearLayout contenidoPantalla;
-
-        @Override
-        protected void onPreExecute() {
-            try {
-                loadingAnimation.start();
-            } catch (Exception e) {
-                Toast.makeText(historialPuntosObtenidos.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                contenidoPantalla=pantalla();
-            } catch (Exception e) {
-                Toast.makeText(historialPuntosObtenidos.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result){
-            try {
-                if(networkInfo!=null && networkInfo.isConnected())
-                {
-                    loadingAnimation.stop();
-                    noInternet.setVisibility(View.GONE);
-                    //loadingView.setVisibility(View.INVISIBLE);
-                    base.addView(contenidoPantalla);
-                }else{
-                    loadingAnimation.stop();
-                    loadingView.setVisibility(View.INVISIBLE);
-                    noInternet.setVisibility(View.VISIBLE);
-                }
-            } catch (Exception e) {
-                Toast.makeText(historialPuntosObtenidos.this, e.getMessage(), Toast.LENGTH_LONG).show();
-            }
+    public void conectarInternet(View v)
+    {
+        //CHECAR LA CONEXION A INTERNET
+        con = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        networkInfo = con.getActiveNetworkInfo();
+        noInternet.setVisibility(View.INVISIBLE);
+        btnConectarInter.setVisibility(View.INVISIBLE);
+        if(networkInfo!=null && networkInfo.isConnected())
+        {
+            noInternet.setVisibility(View.GONE);
+            btnConectarInter.setVisibility(View.GONE);
+            pantalla();
+        }else
+        {
+            gifLoading.stopAnimation();
+            gifLoading.setVisibility(View.GONE);
+            noInternet.setVisibility(View.VISIBLE);
+            btnConectarInter.setVisibility(View.VISIBLE);
+            Toast.makeText(this, "Conectese a internet", Toast.LENGTH_SHORT).show();
         }
     }
 
     //CONEXION A LA BD MEDIANTE WEB SERVICE: HISTORIAL - OBTENER LOS PUNTOS QUE EL USUARIO HA OBTENIDO
-    public LinearLayout pantalla()
+    public void pantalla()
     {
+        try {
+            InputStream inputStream = null;
+            inputStream = getAssets().open("loading.gif");
+            byte[] bytes = IOUtils.toByteArray(inputStream);
+            gifLoading.setBytes(bytes);
+            gifLoading.setVisibility(View.VISIBLE);
+            gifLoading.startAnimation();
+        } catch (IOException e) {
+
+        }
         //BASE PRINCIPAL
         ScrollView scrollView = new ScrollView(getApplicationContext());
 
@@ -203,7 +198,7 @@ public class historialPuntosObtenidos extends AppCompatActivity {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://tunas.mztzone.com/tunas/apiEsme/historialPuntosObtenidos/2";
+        String url ="http://tunas.mztzone.com/tunas/apiEsme/historialPuntosObtenidos/"+LoginActivity.idUsuario;
 
         // Request a string response from the provided URL.
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -212,6 +207,8 @@ public class historialPuntosObtenidos extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            gifLoading.stopAnimation();
+                            gifLoading.setVisibility(View.INVISIBLE);
                             JSONArray myJsonArray = response.getJSONArray("historialPuntosObtenidos");
                             for (int i=0; i<myJsonArray.length(); i++)
                             {
@@ -239,8 +236,8 @@ public class historialPuntosObtenidos extends AppCompatActivity {
 
                                 //IMAGEN
                                 ImageView imagen = new ImageView(getApplicationContext());
-                                imagen.setImageResource(R.mipmap.cupon_tallrect);
-                                FrameLayout.LayoutParams margenImagen = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.MATCH_PARENT);
+                                imagen.setImageResource(R.drawable.water_bottle_100px);
+                                FrameLayout.LayoutParams margenImagen = new FrameLayout.LayoutParams(150, 150);
                                 margenImagen.setMargins(0,30,0,40);
                                 imagen.setLayoutParams(margenImagen);
 
@@ -312,13 +309,12 @@ public class historialPuntosObtenidos extends AppCompatActivity {
 
         //AGREGAR EL CUERPO A LA BASE SECUNDARIA
         contenedor.addView(cuerpo);
-        return contenedor;
         //AGREGAR BASE SECUNDARIA A LA BASE PRINCIPAL
-        //scrollView.addView(contenedor);
+        scrollView.addView(contenedor);
 
         //AGREGAR LA BASE PRINCIPAL A LA PANTALLA
-        //FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        //addContentView(scrollView, params);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        addContentView(scrollView, params);
 
     }
 }

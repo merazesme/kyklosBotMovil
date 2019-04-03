@@ -172,7 +172,6 @@ public class Registro extends AppCompatActivity {
                     banderaEmail = 1;
                 }else{
                     email.setError("Formato de email incorrecto");
-                    banderaContra = 0;
                 }
             }
         });
@@ -225,6 +224,7 @@ public class Registro extends AppCompatActivity {
                                 contra.setVisibility(View.INVISIBLE);
                                 contra2.setVisibility(View.INVISIBLE);
                                 email.setVisibility(View.INVISIBLE);
+                                //titulo.setVisibility(View.INVISIBLE);
                             } catch (IOException ex) {
 
                             }
@@ -245,6 +245,7 @@ public class Registro extends AppCompatActivity {
                                         contra.setVisibility(View.VISIBLE);
                                         contra2.setVisibility(View.VISIBLE);
                                         email.setVisibility(View.VISIBLE);
+                                        //titulo.setVisibility(View.VISIBLE);
                                         Toast.makeText(getApplicationContext(), "Ya existe este nombre usuario", Toast.LENGTH_SHORT).show();
                                     } else {
                                         LoginActivity.idUsuario = response.trim();
@@ -263,9 +264,9 @@ public class Registro extends AppCompatActivity {
                                         contra.setVisibility(View.VISIBLE);
                                         contra2.setVisibility(View.VISIBLE);
                                         email.setVisibility(View.VISIBLE);
+                                        //titulo.setVisibility(View.VISIBLE);
                                         Toast.makeText(getApplicationContext(), "Registro agregado " + LoginActivity.idUsuario, Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(context, MainActivity.class);
-                                        finish();
                                         startActivity(intent);
                                     }
                                 }
@@ -283,6 +284,7 @@ public class Registro extends AppCompatActivity {
                                     contra.setVisibility(View.VISIBLE);
                                     contra2.setVisibility(View.VISIBLE);
                                     email.setVisibility(View.VISIBLE);
+                                    //titulo.setVisibility(View.VISIBLE);
                                     Toast.makeText(getApplicationContext(), "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
                                 }
                             }) {
@@ -334,6 +336,17 @@ public class Registro extends AppCompatActivity {
                     contra.setVisibility(View.INVISIBLE);
                     contra2.setVisibility(View.INVISIBLE);
                     email.setVisibility(View.INVISIBLE);
+                    //titulo.setVisibility(View.INVISIBLE);
+
+                    /*iniciar.setVisibility(View.GONE);
+
+                    nombre.setVisibility(View.GONE);
+                    apellido.setVisibility(View.GONE);
+                    usuario.setVisibility(View.GONE);
+                    contra.setVisibility(View.GONE);
+                    contra2.setVisibility(View.GONE);
+                    email.setVisibility(View.GONE);
+                    titulo.setVisibility(View.GONE);*/
                 }
                 catch (IOException ex)
                 {
