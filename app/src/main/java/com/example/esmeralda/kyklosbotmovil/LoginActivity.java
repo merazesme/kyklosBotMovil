@@ -118,13 +118,12 @@ public class LoginActivity extends Activity {
             }
         });
 
-        /*SharedPreferences prefs = getSharedPreferences("login",Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("login",Context.MODE_PRIVATE);
         String id = prefs.getString("id", "");
         if (id.length() != 0){
             Intent intent = new Intent(context, MainActivity.class);
             startActivity(intent);
-        }*/
-
+        }
 
         iniciar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,7 +244,7 @@ public class LoginActivity extends Activity {
                                 texto.setVisibility(View.VISIBLE);
                                 nuevo.setVisibility(View.VISIBLE);
                                 sesion.setVisibility(View.VISIBLE);
-                                Toast.makeText(getApplicationContext(), "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Ha ocurrido un error" + error, Toast.LENGTH_SHORT).show();
                             }
                         }) {
                             @Override
