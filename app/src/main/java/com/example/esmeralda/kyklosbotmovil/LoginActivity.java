@@ -225,7 +225,7 @@ public class LoginActivity extends Activity {
                                         editor.putString("id", idUsuario);
                                         editor.commit();
                                         Intent intent = new Intent(context, MainActivity.class);
-                                        finish();
+                                        //finish();
                                         startActivity(intent);
                                     }
                                 }
