@@ -7,6 +7,15 @@
     tools:context="com.example.esmeralda.kyklosbotmovil.LoginActivity"
     android:background="@drawable/background">
 
+    <!-- Comment this ImageView after you have handled the image background with Java at the Activity-->
+    <!--    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/background"
+            android:scaleType="centerCrop"
+            android:id="@+id/formBack"
+            />-->
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/ConstraintLayout"
         android:layout_width="match_parent"
@@ -155,6 +164,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_style"
+            android:background="@drawable/register_button"
             android:onClick="Registro"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
@@ -179,6 +189,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_style"
+            android:background="@drawable/register_button"
             android:onClick="intentar"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
@@ -203,6 +214,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_style"
+            android:background="@drawable/register_button"
             android:onClick="iniciarSesion"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
