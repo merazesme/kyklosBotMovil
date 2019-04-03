@@ -24,8 +24,6 @@ import com.android.volley.toolbox.Volley;
 import com.felipecsl.gifimageview.library.GifImageView;
 
 import org.apache.commons.io.IOUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,7 +42,7 @@ public class LoginActivity extends Activity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         final Context context = this;
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
         getWindow().setBackgroundDrawableResource(R.drawable.background);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -70,7 +68,6 @@ public class LoginActivity extends Activity {
         iniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 iniciarSesion(context);
             }
         });
@@ -158,7 +155,8 @@ public class LoginActivity extends Activity {
                                     nuevo.setVisibility(View.VISIBLE);
                                     sesion.setVisibility(View.VISIBLE);
                                     idUsuario = response;
-                                    Intent intent = new Intent(context, Ubicacion.class);
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    finish();
                                     startActivity(intent);
                                 }
                             }
@@ -273,7 +271,7 @@ public class LoginActivity extends Activity {
     }
     public void Inicio(View view){
         try {
-            Intent mapa = new Intent(this,Ubicacion.class);
+            Intent mapa = new Intent(this,MainActivity.class);
             startActivity(mapa);
         } catch (Exception e) {
             e.printStackTrace();

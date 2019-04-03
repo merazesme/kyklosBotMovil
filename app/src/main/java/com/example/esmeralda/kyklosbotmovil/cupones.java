@@ -4,11 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -22,7 +20,6 @@ import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -36,11 +33,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.felipecsl.gifimageview.library.GifImageView;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,17 +54,16 @@ public class cupones extends AppCompatActivity {
     Dialog myDialog;
     GridLayout cuerpo;
     String puntos, puntosUsuario, idPremio,idPremioSelected;
-    int u,p, banderaVista=0;
+    int u,p;
     private Button btnCajear, btnCancelar;
     private TextView txtpuntosDialog;
     private TextView txtClosePopup;
     private ImageView imgPopUp, noInternet;
+    private GifImageView gifLoading;
+    private Button btnConectarInter;
 
     //VARIABLES DE LA VISTA
     private ScrollView base;
-
-    ImageView loadingView;
-    AnimationDrawable loadingAnimation;
 
     ConnectivityManager con;
     NetworkInfo networkInfo;
@@ -74,13 +74,11 @@ public class cupones extends AppCompatActivity {
         setContentView(R.layout.activity_cupones);
 
         try {
-            //Loading gif
-            loadingView = (ImageView)findViewById(R.id.loadingView);
-            loadingAnimation = (AnimationDrawable)loadingView.getDrawable();
 
             //Internet
             noInternet = (ImageView)findViewById(R.id.noInternet);
             noInternet.setVisibility(View.INVISIBLE);
+            btnConectarInter = (Button)findViewById(R.id.btnConectar);
 
             //INSTANCIA DEL POPUP
             myDialog = new Dialog(this);
@@ -95,16 +93,15 @@ public class cupones extends AppCompatActivity {
             //ELEMENTOS DE LA VISTA
             base = (ScrollView)findViewById(R.id.viewScroll);
 
-            //CHECAR LA CONEXION A INTERNET
-            con = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-            networkInfo = con.getActiveNetworkInfo();
+            gifLoading = (GifImageView)findViewById(R.id.gifImageView);
 
-            //PROCESO EN SEGUNDO PLANO
-            new procesoCargarPantalla().execute();
+            conectarInternet(null);
+
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
 
     //CARGAR MENU '...'
     @Override
@@ -147,47 +144,26 @@ public class cupones extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //CLASE PARA EJECUTAR SPINNER MIENTRAS SE CARGA LA VISTA
-    class procesoCargarPantalla extends AsyncTask<Void, Void, Boolean>{
-        LinearLayout contenidoPantalla;
-
-        @Override
-        protected void onPreExecute() {
-            try {
-                loadingAnimation.start();
-            } catch (Exception e) {
-                Toast.makeText(cupones.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                consultarPuntosUsuario();
-                contenidoPantalla=pantalla();
-            } catch (Exception e) {
-                Toast.makeText(cupones.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result){
-            try {
-                if(networkInfo!=null && networkInfo.isConnected())
-                {
-                    loadingAnimation.stop();
-                    noInternet.setVisibility(View.GONE);
-                    //loadingView.setVisibility(View.INVISIBLE);
-                    base.addView(contenidoPantalla);
-                }else{
-                    loadingAnimation.stop();
-                    loadingView.setVisibility(View.INVISIBLE);
-                    noInternet.setVisibility(View.VISIBLE);
-                }
-            } catch (Exception e) {
-                Toast.makeText(cupones.this, e.getMessage(), Toast.LENGTH_LONG).show();
-            }
+    public void conectarInternet(View v)
+    {
+        //CHECAR LA CONEXION A INTERNET
+        con = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        networkInfo = con.getActiveNetworkInfo();
+        noInternet.setVisibility(View.INVISIBLE);
+        btnConectarInter.setVisibility(View.INVISIBLE);
+        if(networkInfo!=null && networkInfo.isConnected())
+        {
+            noInternet.setVisibility(View.GONE);
+            btnConectarInter.setVisibility(View.GONE);
+            consultarPuntosUsuario();
+            pantalla();
+        }else
+        {
+            gifLoading.stopAnimation();
+            gifLoading.setVisibility(View.GONE);
+            noInternet.setVisibility(View.VISIBLE);
+            btnConectarInter.setVisibility(View.VISIBLE);
+            Toast.makeText(this, "Conectese a internet", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -197,7 +173,7 @@ public class cupones extends AppCompatActivity {
         try {
             // Instantiate the RequestQueue.
             RequestQueue queuePuntosUsuario = Volley.newRequestQueue(this);
-            String urlUsuario ="http://tunas.mztzone.com/tunas/apiEsme/puntos/2";
+            String urlUsuario ="http://tunas.mztzone.com/tunas/apiEsme/puntos/"+LoginActivity.idUsuario;
             // Request a string response from the provided URL.
             JsonObjectRequest jsonObjectRequestPuntosUsuario = new JsonObjectRequest
                     (Request.Method.GET, urlUsuario, null, new Response.Listener<JSONObject>() {
@@ -231,8 +207,20 @@ public class cupones extends AppCompatActivity {
     }
 
     //CONEXION A LA BD MEDIANTE WEB SERVICE: GENERAR CUPONES
-    public LinearLayout pantalla()
+    public void pantalla()
     {
+
+        try {
+            InputStream inputStream = null;
+            inputStream = getAssets().open("loading.gif");
+            byte[] bytes = IOUtils.toByteArray(inputStream);
+            gifLoading.setBytes(bytes);
+            gifLoading.setVisibility(View.VISIBLE);
+            gifLoading.startAnimation();
+        } catch (IOException e) {
+
+        }
+
         //PANTALA CUPONES DEL CINE
         LinearLayout contenedor = new LinearLayout(getApplicationContext());
         try {
@@ -284,6 +272,8 @@ public class cupones extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
+                                gifLoading.stopAnimation();
+                                gifLoading.setVisibility(View.INVISIBLE);
                                 JSONArray myJsonArray = response.getJSONArray("premios");
                                 for (int i=0; i<myJsonArray.length(); i++)
                                 {
@@ -316,10 +306,10 @@ public class cupones extends AppCompatActivity {
                                     switch (Integer.parseInt(idCategoria))
                                     {
                                         case 1: //dulceria
-                                            imagen.setImageResource(R.drawable.dulceria);
+                                            imagen.setImageResource(R.drawable.dulceria_100px);
                                             break;
                                         case 2: //taquilla
-                                            imagen.setImageResource(R.drawable.taquilla);
+                                            imagen.setImageResource(R.drawable.proyector_100px);
                                             break;
                                         case 3: //multiple
                                             imagen.setImageResource(R.drawable.multiple);
@@ -351,7 +341,6 @@ public class cupones extends AppCompatActivity {
 
                                     //PUNTOS DE LA CARTA
                                     final TextView txtPuntos = new TextView(getApplicationContext());
-                                    //txtPuntos.setTextColor(getColorStateList(R.color.blueAccent));
                                     txtPuntos.setTextSize(15);
                                     txtPuntos.setText(puntos+" puntos");
 
@@ -387,10 +376,10 @@ public class cupones extends AppCompatActivity {
                                             switch (Integer.parseInt(idCategoria))
                                             {
                                                 case 1: //dulceria
-                                                    imgPopUp.setImageResource(R.drawable.dulceria);
+                                                    imgPopUp.setImageResource(R.drawable.dulceria_100px);
                                                     break;
                                                 case 2: //taquilla
-                                                    imgPopUp.setImageResource(R.drawable.taquilla);
+                                                    imgPopUp.setImageResource(R.drawable.proyector_100px);
                                                     break;
                                                 case 3: //multiple
                                                     imgPopUp.setImageResource(R.drawable.multiple);
@@ -402,10 +391,12 @@ public class cupones extends AppCompatActivity {
                                             {
                                                 txtpuntosDialog.setText("Puntos insuficientes");
                                                 btnCajear.setEnabled(false);
+                                                btnCajear.setBackground(getDrawable(R.drawable.button_disabled_style));
                                             }else
                                             {
                                                 txtpuntosDialog.setText(txtPuntos.getText());
                                                 btnCajear.setEnabled(true);
+                                                btnCajear.setBackground(getDrawable(R.drawable.button_style));
                                                 btnCajear.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
@@ -431,7 +422,8 @@ public class cupones extends AppCompatActivity {
 
                                 }
                             } catch (JSONException e) {
-                                e.printStackTrace();
+                                Toast.makeText(cupones.this, "Error al cargar los cupones", Toast.LENGTH_SHORT).show();
+
                             }
                         }
                     }, new Response.ErrorListener() {
@@ -439,7 +431,7 @@ public class cupones extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // TODO: Handle error
-                            Toast.makeText(cupones.this, "Error al cargar cupones", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(cupones.this, "Error al cargar los datos", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -449,8 +441,12 @@ public class cupones extends AppCompatActivity {
             //AGREGAR EL CUERPO A LA BASE SECUNDARIA
             contenedor.addView(cuerpo);
 
+           //AGREGAR BASE SECUNDARIA A LA BASE PRINCIPAL
+            scrollView.addView(contenedor);
+
             //AGREGAR LA BASE PRINCIPAL A LA PANTALLA
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            addContentView(scrollView, params);
 
             //CERRAR POP UP
             txtClosePopup.setOnClickListener(new View.OnClickListener(){
@@ -463,7 +459,6 @@ public class cupones extends AppCompatActivity {
         } catch (NumberFormatException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        return contenedor;
     }
 
     //CONEXION A LA BD MEDIANTE WEB SERVICE: CANJEAR CUPON
@@ -478,21 +473,14 @@ public class cupones extends AppCompatActivity {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-
-                            try {
-                                JSONObject object = new JSONObject(response);
-                                Toast.makeText(getApplicationContext(), object.toString(), Toast.LENGTH_SHORT).show();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-
+                                Toast.makeText(getApplicationContext(), "Puntos canjeados", Toast.LENGTH_SHORT).show();
+                                pantalla();
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(cupones.this, "Error al canjear cupón", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(cupones.this, "Error al canjear puntos", Toast.LENGTH_SHORT).show();
                 }
             }) {
                 @Override
@@ -503,7 +491,7 @@ public class cupones extends AppCompatActivity {
                     String fecha = dateFormat.format(date);
                     params.put("puntos", String.valueOf(p));
                     params.put("fecha", fecha);
-                    params.put("idusuario", "2");
+                    params.put("idusuario", LoginActivity.idUsuario);
                     params.put("idpremio", idPremioSelected);
                     params.put("estado", "1");
                     params.put("updated", fecha);

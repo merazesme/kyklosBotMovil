@@ -7,19 +7,22 @@
     android:background="@drawable/fondomovil"
     tools:context=".historialPuntosObtenidos">
 
-    <ImageView
-        android:id="@+id/loadingView"
-        android:layout_width="158dp"
-        android:layout_height="254dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/viewScroll"
+    <com.felipecsl.gifimageview.library.GifImageView
+        android:id="@+id/gifImageView"
+        android:layout_width="190dp"
+        android:layout_height="214dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="113dp"
+        android:scaleType="fitCenter"
+
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/loading" />
+        app:layout_constraintVertical_bias="0.249" />
+
 
     <ImageView
         android:id="@+id/noInternet"
@@ -35,6 +38,30 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.091"
         app:srcCompat="@drawable/sin_internet" />
+
+    <Button
+        android:id="@+id/btnConectar"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/button_style"
+        android:onClick="conectarInternet"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="INTENTAR DE NUEVO"
+        android:textColor="@color/white"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.676" />
 
     <ScrollView
         android:id="@+id/viewScroll"

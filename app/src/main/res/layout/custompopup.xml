@@ -62,6 +62,8 @@
                     android:layout_columnWeight="1"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="15dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/button_style"
                     android:text="Canjear" />
 
                 <Button
@@ -72,6 +74,8 @@
                     android:layout_columnWeight="1"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="15dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/button_style"
                     android:text="Cancelar" />
             </GridLayout>
         </LinearLayout>

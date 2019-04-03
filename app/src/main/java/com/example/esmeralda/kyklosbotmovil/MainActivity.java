@@ -7,7 +7,6 @@ import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,8 +15,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         CardView verCupones = (CardView)findViewById(R.id.irVerCupones);
         CardView misCupones = (CardView)findViewById(R.id.irMisCupones);
+        CardView info = (CardView)findViewById(R.id.irInformacion);
 
         verCupones.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +35,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(pantallaMisCupones);
             }
         });
+
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pantallaInformacion = new Intent(getApplicationContext(), howTo.class);
+                startActivity(pantallaInformacion);
+            }
+        });
+
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
