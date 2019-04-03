@@ -8,13 +8,13 @@
     android:background="@drawable/background">
 
     <!-- Comment this ImageView after you have handled the image background with Java at the Activity-->
-<!--    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/background"
-        android:scaleType="centerCrop"
-        android:id="@+id/formBack"
-        />-->
+    <!--    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/background"
+            android:scaleType="centerCrop"
+            android:id="@+id/formBack"
+            />-->
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/ConstraintLayout"

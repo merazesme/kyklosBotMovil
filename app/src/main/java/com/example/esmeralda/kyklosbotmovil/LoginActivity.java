@@ -342,6 +342,14 @@ public class LoginActivity extends Activity {
             }
         }
     }
+    public void Registro(View view){
+        try {
+            Intent m = new Intent(this,Registro.class);
+            startActivity(m);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private boolean isValidUsuario(String usuario){
 
         return Pattern.compile("^[a-zA-Z 0-9]*$").matcher(usuario).matches();

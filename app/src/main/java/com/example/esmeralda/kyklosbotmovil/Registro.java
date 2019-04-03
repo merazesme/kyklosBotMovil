@@ -172,6 +172,7 @@ public class Registro extends AppCompatActivity {
                     banderaEmail = 1;
                 }else{
                     email.setError("Formato de email incorrecto");
+                    banderaContra = 0;
                 }
             }
         });
