@@ -118,12 +118,12 @@ public class LoginActivity extends Activity {
             }
         });
 
-        SharedPreferences prefs = getSharedPreferences("login",Context.MODE_PRIVATE);
+        /*SharedPreferences prefs = getSharedPreferences("login",Context.MODE_PRIVATE);
         String id = prefs.getString("id", "");
         if (id.length() != 0){
-            Intent intent = new Intent(context, Ubicacion.class);
+            Intent intent = new Intent(context, MainActivity.class);
             startActivity(intent);
-        }
+        }*/
 
 
         iniciar.setOnClickListener(new View.OnClickListener() {

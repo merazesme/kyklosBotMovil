@@ -177,13 +177,6 @@ public class Registro extends AppCompatActivity {
             }
         });
 
-        SharedPreferences prefs = getSharedPreferences("login",Context.MODE_PRIVATE);
-        String id = prefs.getString("id", "");
-        if (id.length() != 0){
-            Intent intent = new Intent(context, Ubicacion.class);
-            startActivity(intent);
-        }
-
         iniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
