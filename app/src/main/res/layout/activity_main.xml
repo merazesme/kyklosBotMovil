@@ -116,7 +116,8 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="12dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="6dp"/>
+                app:cardElevation="6dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -138,32 +139,7 @@
                         android:textSize="18sp" />
 
                 </LinearLayout>
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-
-                        <ImageView
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
-                            android:src="@drawable/ticket_100px" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="Mis cupones"
-                            android:textColor="#6f6f6f"
-                            android:textSize="18sp" />
-
-                    </LinearLayout>
-                </Button>
+            </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:layout_width="wrap_content"
@@ -246,7 +222,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:padding="16dp"/>
+                    android:padding="16dp">
 
                     <ImageView
                         android:layout_width="80dp"
@@ -260,26 +236,6 @@
                         android:text="Información"
                         android:textColor="#6f6f6f"
                         android:textSize="18sp" />
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
-                    <ImageView
-                        android:src="@drawable/info_100px"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        />
-                    <TextView
-                        android:layout_marginTop="12dp"
-                        android:textColor="#6f6f6f"
-                        android:textSize="18sp"
-                        android:text="Información"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        />
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>
