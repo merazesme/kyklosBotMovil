@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Kyklos Bot</string>
+    <string name="title_activity_informacion">Informacion</string>
+    <string name="tituloK">
+        "Kyklos Bot\n\n"
+    </string>
+    <string name="kyklos">
+        "Máquina recicladora de botellas, que premia al ciudadano por recolectar envases de plastico"
+        "vacíos como también por su colaboración con el cuidado del medio ambiente.\n"
+        "Kyklos Bot está formado por la  palabra griega “Kyklos” que significa círculo, derivada de"
+        "la palabra reciclaje, y “Bot” que viene de la palabra botellas o de igual manera de la"
+        "palabra Robot.\n\n"
+
+        "Se fundo principalmente por la necesidad de hacer conciencia en la población por el gran"
+        "número de contaminación que se genera día con día, ya que por medio de Kyklos Bot se quiere"
+        "fomentar el reciclaje en la sociedad.\n "
+    </string>
+    <string name="tunas">
+        "TUNAS\n"
+        "Tecnlogía Unificada en Aplicaciones de Software\n\n"
+        "Fundada en el año 2018 por: Itzel Rendón, Adriana Hernández, Esmeralda Meraz,"
+        "Fabiola Paez y Jesús Vizcarra. Esta es una empresa 100% mexicana, que brinda servicios de"
+        "calidad a sus cliente.\n\n"
+    </string>
+    <string name="action_settings">Settings</string>
 </resources>
