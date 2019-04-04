@@ -101,6 +101,10 @@ public class misCupones extends AppCompatActivity {
                 Intent pantallahPuntosCanjeados = new Intent(this, historialPuntosCanjeados.class);
                 finish();
                 startActivity(pantallahPuntosCanjeados);
+            }else if (id == R.id.info)
+            {
+                Intent pantallaInformacion = new Intent(this, Informacion.class);
+                startActivity(pantallaInformacion);
             }
             else if (id == R.id.menuPrincipal)
             {

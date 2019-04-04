@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
 
         CardView verCupones = (CardView)findViewById(R.id.irVerCupones);
         CardView misCupones = (CardView)findViewById(R.id.irMisCupones);
+        CardView leerQR = (CardView)findViewById(R.id.irLeerQR);
+        CardView perfil = (CardView)findViewById(R.id.irPerfil);
         CardView info = (CardView)findViewById(R.id.irInformacion);
 
         verCupones.setOnClickListener(new View.OnClickListener() {
@@ -33,6 +35,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent pantallaMisCupones = new Intent(getApplicationContext(), misCupones.class);
                 startActivity(pantallaMisCupones);
+            }
+        });
+
+        leerQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pantallaLectorQR = new Intent(getApplicationContext(), LectorQR.class);
+                startActivity(pantallaLectorQR);
+            }
+        });
+
+        perfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pantallaPerfil = new Intent(getApplicationContext(), Perfil.class);
+                startActivity(pantallaPerfil);
             }
         });
 
@@ -66,6 +84,11 @@ public class MainActivity extends AppCompatActivity {
             {
                 Intent pantallahPuntosCanjeados = new Intent(this, historialPuntosCanjeados.class);
                 startActivity(pantallahPuntosCanjeados);
+            }
+            else if (id == R.id.info)
+            {
+                Intent pantallaInformacion = new Intent(this, Informacion.class);
+                startActivity(pantallaInformacion);
             }
 
         } catch (Exception e) {
