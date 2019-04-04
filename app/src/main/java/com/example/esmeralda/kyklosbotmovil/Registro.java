@@ -203,11 +203,11 @@ public class Registro extends AppCompatActivity {
                         Email.length() != 0) {
                     if (Contra.equals(Contra2))
                     {
-                        if (banderaNombre == 1 &&
-                                banderaApellido == 1 &&
-                                banderaUsuario == 1 &&
-                                banderaContra == 1 &&
-                                banderaEmail == 1) {
+                        if (isValidNombre(nombre.getText().toString()) &&
+                                isValidNombre(apellido.getText().toString()) &&
+                                isValidUsuario(usuario.getText().toString()) &&
+                                isValidUsuario(contra.getText().toString()) &&
+                                isValidEmailId(email.getText().toString())) {
                             banderaEmail = 0; banderaContra = 0; banderaUsuario = 0; banderaApellido = 0; banderaNombre = 0;
                             try {
                                 InputStream inputStream = getAssets().open("loading.gif");
@@ -264,9 +264,10 @@ public class Registro extends AppCompatActivity {
                                         contra.setVisibility(View.VISIBLE);
                                         contra2.setVisibility(View.VISIBLE);
                                         email.setVisibility(View.VISIBLE);
-                                        //titulo.setVisibility(View.VISIBLE);
-                                        Toast.makeText(getApplicationContext(), "Registro agregado " + LoginActivity.idUsuario, Toast.LENGTH_SHORT).show();
+
                                         Intent intent = new Intent(context, MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         startActivity(intent);
                                     }
                                 }
