@@ -65,7 +65,7 @@ public class ProgressBarAnimation extends Animation {
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(context, "Response: " + response, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(context, "Response: " + response, Toast.LENGTH_LONG).show();
                         resultado=response;
                     }
                 }, new Response.ErrorListener() {

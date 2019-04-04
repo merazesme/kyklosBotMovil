@@ -1,6 +1,10 @@
 package com.example.esmeralda.kyklosbotmovil;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -9,18 +13,36 @@ import android.view.MenuItem;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         CardView verCupones = (CardView)findViewById(R.id.irVerCupones);
         CardView misCupones = (CardView)findViewById(R.id.irMisCupones);
         CardView leerQR = (CardView)findViewById(R.id.irLeerQR);
         CardView perfil = (CardView)findViewById(R.id.irPerfil);
         CardView info = (CardView)findViewById(R.id.irInformacion);
+
+        int permissionCheck2 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CAMERA)) {
+
+            } else {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_CAMERA);
+
+            }
+        }
 
         verCupones.setOnClickListener(new View.OnClickListener() {
             @Override

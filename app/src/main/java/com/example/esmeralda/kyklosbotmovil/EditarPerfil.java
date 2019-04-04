@@ -1,8 +1,12 @@
 package com.example.esmeralda.kyklosbotmovil;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -12,6 +16,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,11 +28,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.felipecsl.gifimageview.library.GifImageView;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +52,10 @@ public class EditarPerfil extends AppCompatActivity implements BottomSheetMenuFr
     private String nombreUsuarios;
     private String nombreUsuariosFinal[];
     private int lo=0;
+    private Intent ventana;
+    public GifImageView gifImageView;
+    public GifImageView gifImageView2;
+    public Button intentar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +69,15 @@ public class EditarPerfil extends AppCompatActivity implements BottomSheetMenuFr
         txtContra=(TextView)findViewById(R.id.txtContra);
         foto=(ImageView) findViewById(R.id.imagenUsuario);
         salir=(TextView)findViewById(R.id.salir);
+
+        gifImageView = (GifImageView)findViewById(R.id.gifImageView);
+        gifImageView2 = (GifImageView)findViewById(R.id.gifImageView);
+
+        ventana = new Intent(this, Perfil.class);
+
+        intentar = (Button)findViewById(R.id.intentar);
+
+        intentar.setVisibility(View.GONE);
 
         try {
             Bundle bundle = getIntent().getExtras();
@@ -160,10 +182,42 @@ public class EditarPerfil extends AppCompatActivity implements BottomSheetMenuFr
         }
     }
 
+    private boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnected();
+    }
+    public void intentar(View view){
+        if(isOnline() == true){
+            try{
+                InputStream inputStream = getAssets().open("sin_internet.gif");
+                byte[] bytes = IOUtils.toByteArray(inputStream);
+                gifImageView2.setBytes(bytes);
+                gifImageView2.startAnimation();
+                gifImageView2.setVisibility(View.INVISIBLE);
+                intentar.setVisibility(View.INVISIBLE);
+
+                txtNombre.setVisibility(View.INVISIBLE);
+                txtCorreo.setVisibility(View.INVISIBLE);
+                txtApellidos.setVisibility(View.INVISIBLE);
+                txtNombreUsuario.setVisibility(View.INVISIBLE);
+                txtContra.setVisibility(View.INVISIBLE);
+                foto.setVisibility(View.INVISIBLE);
+                salir.setVisibility(View.INVISIBLE);
+            }
+            catch (IOException ex)
+            {
+
+            }
+        }
+    }
+
     public void ponerImagen(String text){
         String uri;
         if(imagen.equals("1") || imagen.equals("")) {
-            uri = "@drawable/sinimagen";
+            uri = "@drawable/logo";
         }
         else {
             uri = "@drawable/"+text+"";
@@ -174,63 +228,116 @@ public class EditarPerfil extends AppCompatActivity implements BottomSheetMenuFr
         Drawable originalDrawable = ContextCompat.getDrawable(getApplicationContext(), imageResource);
         Bitmap originalBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
 
-        if(imagen.equals("1") || imagen.equals("")) {
+        /*if(imagen.equals("1") || imagen.equals("")) {
             //creamos el drawable redondeado
             RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(), originalBitmap);
             //asignamos el CornerRadius
             roundedDrawable.setCornerRadius(originalBitmap.getHeight());
             //asigamos al imageview
             foto.setImageDrawable(roundedDrawable);
-        }
-        else {
+        }*/
+        //else {
             foto.setImageBitmap(originalBitmap);
-        }
+        //}
     }
 
     public void actualizarPerfil(){
         //CONEXION A LA BD MEDIANTE WEB SERVICE
         try {
-            //Actualizar perfil usuario
-            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-            String url ="http://tunas.mztzone.com/tunas/apiAdriana/actualizarPerfil/"+idUsuario+"";
-            StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
-                    new Response.Listener<String>()
-                    {
-                        @Override
-                        public void onResponse(String response) {
-                            // response
-                            Toast.makeText(getApplicationContext(),"Se actualizaron tus datos exitosamente!", Toast.LENGTH_LONG).show();
-                            finish();
-                            //startActivity(ventana);
-                        }
-                    },
-                    new Response.ErrorListener()
-                    {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // error
-                            Toast.makeText(getApplicationContext(),"Error", Toast.LENGTH_LONG).show();
-                        }
-                    }
-            ) {
+            if (isOnline()) {
+                try {
+                    InputStream inputStream = getAssets().open("loading.gif");
+                    byte[] bytes = IOUtils.toByteArray(inputStream);
+                    gifImageView.setBytes(bytes);
+                    gifImageView.startAnimation();
+                    gifImageView.setVisibility(View.VISIBLE);
 
-                @Override
-                protected Map<String, String> getParams()
-                {
-                    Map<String, String>  params = new HashMap<String, String>();
-                    params.put("Nombre", txtNombre.getText().toString());
-                    params.put("Apellidos", txtApellidos.getText().toString());
-                    params.put("Correo", txtCorreo.getText().toString());
-                    params.put("Usuario", txtNombreUsuario.getText().toString());
-                    params.put("Contra", txtContra.getText().toString());
-                    params.put("Imagen", imagen);
+                    txtNombre.setVisibility(View.INVISIBLE);
+                    txtCorreo.setVisibility(View.INVISIBLE);
+                    txtApellidos.setVisibility(View.INVISIBLE);
+                    txtContra.setVisibility(View.INVISIBLE);
+                    txtNombreUsuario.setVisibility(View.INVISIBLE);
+                    foto.setVisibility(View.INVISIBLE);
+                    salir.setVisibility(View.INVISIBLE);
 
-                    return params;
+                } catch (IOException ex) {
+
                 }
 
-            };
+                //Actualizar perfil usuario
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                String url = "http://tunas.mztzone.com/tunas/apiAdriana/actualizarPerfil/" + idUsuario + "";
+                StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                // response
 
-            queue.add(putRequest);
+                                //Detiene loading
+                                gifImageView.stopAnimation();
+                                gifImageView.setVisibility(View.INVISIBLE);
+
+                                txtNombre.setVisibility(View.INVISIBLE);
+                                txtCorreo.setVisibility(View.INVISIBLE);
+                                txtApellidos.setVisibility(View.INVISIBLE);
+                                txtNombreUsuario.setVisibility(View.INVISIBLE);
+                                txtContra.setVisibility(View.INVISIBLE);
+                                foto.setVisibility(View.INVISIBLE);
+                                salir.setVisibility(View.INVISIBLE);
+
+                                Toast.makeText(getApplicationContext(), "Se actualizaron tus datos exitosamente!", Toast.LENGTH_LONG).show();
+                                finish();
+                                startActivity(ventana);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // error
+                                Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                ) {
+
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Nombre", txtNombre.getText().toString());
+                        params.put("Apellidos", txtApellidos.getText().toString());
+                        params.put("Correo", txtCorreo.getText().toString());
+                        params.put("Usuario", txtNombreUsuario.getText().toString());
+                        params.put("Contra", txtContra.getText().toString());
+                        params.put("Imagen", imagen);
+
+                        return params;
+                    }
+
+                };
+
+                queue.add(putRequest);
+            }
+            else{
+                try{
+                    InputStream inputStream = getAssets().open("sin_internet.gif");
+                    byte[] bytes = IOUtils.toByteArray(inputStream);
+                    gifImageView2.setBytes(bytes);
+                    gifImageView2.startAnimation();
+                    gifImageView2.setVisibility(View.VISIBLE);
+                    intentar.setVisibility(View.VISIBLE);
+
+                    txtNombre.setVisibility(View.INVISIBLE);
+                    txtCorreo.setVisibility(View.INVISIBLE);
+                    txtApellidos.setVisibility(View.INVISIBLE);
+                    txtNombreUsuario.setVisibility(View.INVISIBLE);
+                    txtContra.setVisibility(View.INVISIBLE);
+                    foto.setVisibility(View.INVISIBLE);
+                    salir.setVisibility(View.INVISIBLE);
+                }
+                catch (IOException ex)
+                {
+
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -239,41 +346,97 @@ public class EditarPerfil extends AppCompatActivity implements BottomSheetMenuFr
 
     public void nombreUsuario(){
         try {
-            //Agarrar maquianas disponibles
-            RequestQueue queue = Volley.newRequestQueue(this);
-            String url = "http://tunas.mztzone.com/tunas/apiAdriana/nombreUsuario";
+            if (isOnline()) {
+                try {
+                    InputStream inputStream = getAssets().open("loading.gif");
+                    byte[] bytes = IOUtils.toByteArray(inputStream);
+                    gifImageView.setBytes(bytes);
+                    gifImageView.startAnimation();
+                    gifImageView.setVisibility(View.VISIBLE);
 
-            // Request a string response from the provided URL.
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                    (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    txtNombre.setVisibility(View.INVISIBLE);
+                    txtCorreo.setVisibility(View.INVISIBLE);
+                    txtApellidos.setVisibility(View.INVISIBLE);
+                    txtContra.setVisibility(View.INVISIBLE);
+                    txtNombreUsuario.setVisibility(View.INVISIBLE);
+                    foto.setVisibility(View.INVISIBLE);
+                    salir.setVisibility(View.INVISIBLE);
 
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            try {
-                                JSONArray myJsonArray = response.getJSONArray("nombres");
-                                int a = myJsonArray.length();
-                                nombreUsuariosFinal = new String[a];
-                                for (int i=0; i<a; i++) {
-                                    JSONObject myJsonObject = myJsonArray.getJSONObject(i);
-                                    nombreUsuarios = myJsonObject.getString("Usuario");
-                                    nombreUsuariosFinal[i] = new String(nombreUsuarios);
+                } catch (IOException ex) {
+
+                }
+
+                //Agarrar maquinas disponibles
+                RequestQueue queue = Volley.newRequestQueue(this);
+                String url = "http://tunas.mztzone.com/tunas/apiAdriana/nombreUsuario";
+
+                // Request a string response from the provided URL.
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                        (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    JSONArray myJsonArray = response.getJSONArray("nombres");
+                                    int a = myJsonArray.length();
+                                    nombreUsuariosFinal = new String[a];
+                                    for (int i = 0; i < a; i++) {
+                                        JSONObject myJsonObject = myJsonArray.getJSONObject(i);
+                                        nombreUsuarios = myJsonObject.getString("Usuario");
+                                        nombreUsuariosFinal[i] = new String(nombreUsuarios);
+                                    }
+                                    lo = nombreUsuariosFinal.length;
+                                    //Toast.makeText(getApplicationContext(),"Nombre usuarios: " + lo, Toast.LENGTH_LONG).show();
+
+                                    //Detiene loading
+                                    gifImageView.stopAnimation();
+                                    gifImageView.setVisibility(View.INVISIBLE);
+
+                                    txtNombre.setVisibility(View.VISIBLE);
+                                    txtCorreo.setVisibility(View.VISIBLE);
+                                    txtApellidos.setVisibility(View.VISIBLE);
+                                    txtNombreUsuario.setVisibility(View.VISIBLE);
+                                    txtContra.setVisibility(View.VISIBLE);
+                                    foto.setVisibility(View.VISIBLE);
+                                    salir.setVisibility(View.VISIBLE);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                                lo=nombreUsuariosFinal.length;
-                                Toast.makeText(getApplicationContext(),"Nombre usuarios: " + lo, Toast.LENGTH_LONG).show();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
-                    }, new Response.ErrorListener() {
+                        }, new Response.ErrorListener() {
 
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // TODO: Handle error
-                        }
-                    });
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                // TODO: Handle error
+                            }
+                        });
 
-            // Add the request to the RequestQueue.
-            queue.add(jsonObjectRequest);
+                // Add the request to the RequestQueue.
+                queue.add(jsonObjectRequest);
+            }
+            else{
+                try{
+                    InputStream inputStream = getAssets().open("sin_internet.gif");
+                    byte[] bytes = IOUtils.toByteArray(inputStream);
+                    gifImageView2.setBytes(bytes);
+                    gifImageView2.startAnimation();
+                    gifImageView2.setVisibility(View.VISIBLE);
+                    intentar.setVisibility(View.VISIBLE);
+
+                    txtNombre.setVisibility(View.INVISIBLE);
+                    txtCorreo.setVisibility(View.INVISIBLE);
+                    txtApellidos.setVisibility(View.INVISIBLE);
+                    txtNombreUsuario.setVisibility(View.INVISIBLE);
+                    txtContra.setVisibility(View.INVISIBLE);
+                    foto.setVisibility(View.INVISIBLE);
+                    salir.setVisibility(View.INVISIBLE);
+                }
+                catch (IOException ex)
+                {
+
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
