@@ -212,7 +212,7 @@ public class misCupones extends AppCompatActivity {
                                     CardView carta = new CardView(getApplicationContext());
                                     FrameLayout.LayoutParams margenCartas = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 
-                                    margenCartas.setMargins(50,30,50,30);
+                                    margenCartas.setMargins(50,10,50,30);
                                     carta.setLayoutParams(margenCartas);
                                     carta.setCardElevation(15);
                                     carta.setRadius(1500);
