@@ -184,7 +184,7 @@ public class cupones extends AppCompatActivity {
                                 JSONArray myJsonArray = response.getJSONArray("puntosUsuario");
                                 JSONObject myJsonObject = myJsonArray.getJSONObject(0);
                                 puntosUsuario = myJsonObject.getString("Puntos");
-                                Toast.makeText(cupones.this, puntosUsuario, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(cupones.this, puntosUsuario, Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
