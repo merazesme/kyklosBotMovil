@@ -2,6 +2,7 @@ package com.example.esmeralda.kyklosbotmovil;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -294,7 +295,12 @@ public class EditarPerfil extends AppCompatActivity implements BottomSheetMenuFr
 
     public void salir(View view) {
         try {
-            finish();
+            SharedPreferences settings = getSharedPreferences("login", Context.MODE_PRIVATE);
+            settings.edit().clear().commit();
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         } catch (Exception e) {
         }
     }
