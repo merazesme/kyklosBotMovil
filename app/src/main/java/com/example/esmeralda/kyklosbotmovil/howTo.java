@@ -31,10 +31,10 @@ public class howTo extends AppCompatActivity {
         sliderAdapter = new sliderAdapter(this);
         canvaImagenes.setAdapter(sliderAdapter);
 
-        btnIrApp = (Button)findViewById(R.id.btnIrApp);
+        //btnIrApp = (Button)findViewById(R.id.btnIrApp);
 
-        if (Registro.banderaPrimeraVez==1) btnIrApp.setVisibility(View.VISIBLE);
-        else btnIrApp.setVisibility(View.GONE);
+        /*if (Registro.banderaPrimeraVez==1) btnIrApp.setVisibility(View.VISIBLE);
+        else btnIrApp.setVisibility(View.GONE);*/
 
         addDotsIndicator(0);
         canvaImagenes.addOnPageChangeListener(viewListener);
