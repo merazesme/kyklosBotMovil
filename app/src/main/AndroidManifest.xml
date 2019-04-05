@@ -47,8 +47,7 @@
             android:value="AIzaSyCLVRslsyel5Xn1jl0Dv7kReLmdHmc21kU" />
 
         <activity
-            android:name=".howTo"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:name=".howTo"/>
         <activity
             android:name=".Info"/>
     </application>
