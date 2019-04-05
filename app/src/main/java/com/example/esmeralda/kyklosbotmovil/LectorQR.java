@@ -51,7 +51,6 @@ public class LectorQR extends AppCompatActivity {
     private String seriesfinal[];
     private Intent ventana;
     private int lo=0;
-    private String idUsuario="3";
     private String puntos;
     public GifImageView gifImageView;
     public GifImageView gifImageView2;
@@ -147,8 +146,13 @@ public class LectorQR extends AppCompatActivity {
                                                     {
                                                         @Override
                                                         public void onErrorResponse(VolleyError error) {
-                                                            // error
-                                                            //Toast.makeText(getApplicationContext(),"Error", Toast.LENGTH_LONG).show();
+                                                            //Detiene loading
+                                                            gifImageView.stopAnimation();
+                                                            gifImageView.setVisibility(View.INVISIBLE);
+
+                                                            surafeceView.setVisibility(View.VISIBLE);
+                                                            textView.setVisibility(View.VISIBLE);
+                                                            Toast.makeText(getApplicationContext(), "Error en el servidor", Toast.LENGTH_SHORT).show();
                                                         }
                                                     }
                                             ) {
@@ -157,7 +161,7 @@ public class LectorQR extends AppCompatActivity {
                                                 protected Map<String, String> getParams()
                                                 {
                                                     Map<String, String>  params = new HashMap<String, String>();
-                                                    params.put("idUsuario", idUsuario);
+                                                    params.put("idUsuario", LoginActivity.idUsuario);
 
                                                     return params;
                                                 }
@@ -254,7 +258,7 @@ public class LectorQR extends AppCompatActivity {
                                         //Segunda peticion
                                         //Agarrar puntos actuales usuario
                                         RequestQueue queue2 = Volley.newRequestQueue(getApplicationContext());
-                                        String url = "http://tunas.mztzone.com/tunas/apiAdriana/puntosUsuario/" + idUsuario + "";
+                                        String url = "http://tunas.mztzone.com/tunas/apiAdriana/puntosUsuario/" + LoginActivity.idUsuario + "";
 
                                         // Request a string response from the provided URL.
                                         JsonObjectRequest jsonObjectRequest2 = new JsonObjectRequest
@@ -283,7 +287,13 @@ public class LectorQR extends AppCompatActivity {
 
                                                     @Override
                                                     public void onErrorResponse(VolleyError error) {
-                                                        //Error
+                                                        //Detiene loading
+                                                        gifImageView.stopAnimation();
+                                                        gifImageView.setVisibility(View.INVISIBLE);
+
+                                                        surafeceView.setVisibility(View.VISIBLE);
+                                                        textView.setVisibility(View.VISIBLE);
+                                                        Toast.makeText(getApplicationContext(), "Error en el servidor", Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
 

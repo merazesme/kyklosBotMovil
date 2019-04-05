@@ -51,7 +51,6 @@ public class Perfil extends AppCompatActivity {
     private TextView txtCupones;
     private String nombre="", apellidos="", nickname="", imagen="", puntos="", correo="", contra="";
     private ImageView foto;
-    private String idUsuario="3";
     public GifImageView gifImageView;
     public GifImageView gifImageView2;
     public CardView card;
@@ -136,7 +135,7 @@ public class Perfil extends AppCompatActivity {
                 startActivity(pantallahPuntosCanjeados);
             }else if (id == R.id.info)
             {
-                Intent pantallaInformacion = new Intent(this, Informacion.class);
+                Intent pantallaInformacion = new Intent(this, Info.class);
                 startActivity(pantallaInformacion);
             }
             else if (id == R.id.menuPrincipal)
@@ -154,7 +153,6 @@ public class Perfil extends AppCompatActivity {
     public void CargarUsuario (){
         //CONEXION A LA BD MEDIANTE WEB SERVICE
         try {
-
             if (isOnline()) {
                 try {
                     InputStream inputStream = getAssets().open("loading.gif");
@@ -179,7 +177,7 @@ public class Perfil extends AppCompatActivity {
 
                 //Agarrar datos usuario
                 RequestQueue queue = Volley.newRequestQueue(this);
-                String url = "http://tunas.mztzone.com/tunas/apiAdriana/usuario/" + idUsuario + "";
+                String url = "http://tunas.mztzone.com/tunas/apiAdriana/usuario/" + LoginActivity.idUsuario + "";
 
                 // Request a string response from the provided URL.
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -207,7 +205,7 @@ public class Perfil extends AppCompatActivity {
 
                                     //Agarrar cupones canjeados
                                     RequestQueue queue2 = Volley.newRequestQueue(getApplicationContext());
-                                    String url2 = "http://tunas.mztzone.com/tunas/apiAdriana/cuponesCanjeados/" + idUsuario + "";
+                                    String url2 = "http://tunas.mztzone.com/tunas/apiAdriana/cuponesCanjeados/" + LoginActivity.idUsuario + "";
 
                                     // Request a string response from the provided URL.
                                     JsonObjectRequest jsonObjectRequest2 = new JsonObjectRequest
@@ -243,7 +241,21 @@ public class Perfil extends AppCompatActivity {
 
                                                 @Override
                                                 public void onErrorResponse(VolleyError error) {
-                                                    // TODO: Handle error
+                                                    //Detiene loading
+                                                    gifImageView.stopAnimation();
+                                                    gifImageView.setVisibility(View.GONE);
+                                                    gifImageView2.setVisibility(View.GONE);
+
+                                                    txtNombre.setVisibility(View.VISIBLE);
+                                                    txtCorreo.setVisibility(View.VISIBLE);
+                                                    txtPuntos.setVisibility(View.VISIBLE);
+                                                    txtUsuario.setVisibility(View.VISIBLE);
+                                                    txtCupones.setVisibility(View.VISIBLE);
+                                                    foto.setVisibility(View.VISIBLE);
+                                                    card.setVisibility(View.VISIBLE);
+                                                    layout2.setVisibility(View.VISIBLE);
+                                                    boton.setVisibility(View.VISIBLE);
+                                                    Toast.makeText(getApplicationContext(), "Error en el srevidor", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
 
@@ -258,7 +270,21 @@ public class Perfil extends AppCompatActivity {
 
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                // TODO: Handle error
+                                //Detiene loading
+                                gifImageView.stopAnimation();
+                                gifImageView.setVisibility(View.GONE);
+                                gifImageView2.setVisibility(View.GONE);
+
+                                txtNombre.setVisibility(View.VISIBLE);
+                                txtCorreo.setVisibility(View.VISIBLE);
+                                txtPuntos.setVisibility(View.VISIBLE);
+                                txtUsuario.setVisibility(View.VISIBLE);
+                                txtCupones.setVisibility(View.VISIBLE);
+                                foto.setVisibility(View.VISIBLE);
+                                card.setVisibility(View.VISIBLE);
+                                layout2.setVisibility(View.VISIBLE);
+                                boton.setVisibility(View.VISIBLE);
+                                Toast.makeText(getApplicationContext(), "Error en el srevidor", Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -335,7 +361,7 @@ public class Perfil extends AppCompatActivity {
                     txtCorreo.length()!=0 && txtPuntos.length()!=0 && txtCupones.length()!=0
                         && foto.getDrawable()!=null) {
                 Intent ventana = new Intent(this, EditarPerfil.class);
-                ventana.putExtra("idUsuario", idUsuario);
+                ventana.putExtra("idUsuario", LoginActivity.idUsuario);
                 ventana.putExtra("nombre", nombre);
                 ventana.putExtra("apellidos", apellidos);
                 ventana.putExtra("nickname", nickname);

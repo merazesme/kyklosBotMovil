@@ -7,38 +7,6 @@
     android:background="@color/white"
     tools:context=".EditarPerfil">
 
-    <com.felipecsl.gifimageview.library.GifImageView
-        android:id="@+id/gifImageView"
-        android:layout_width="190dp"
-        android:layout_height="214dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginTop="113dp"
-        android:scaleType="fitCenter"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.249" />
-
-    <com.felipecsl.gifimageview.library.GifImageView
-        android:id="@+id/gifImageView2"
-        android:layout_width="190dp"
-        android:layout_height="214dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginTop="113dp"
-        android:scaleType="fitCenter"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.249" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

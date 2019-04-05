@@ -38,8 +38,7 @@
             android:noHistory="true" />
         <activity android:name=".Perfil" />
         <activity
-            android:name=".EditarPerfil"
-            android:parentActivityName=".Perfil" />
+            android:name=".EditarPerfil"/>
         <activity android:name=".Loading" />
         <activity android:name=".LectorQRespuesta" />
 
@@ -48,10 +47,8 @@
             android:value="AIzaSyBS1Ay_LSabB9IOx6oqBJ7SBAb9WaD5PFk" />
 
         <activity android:name=".howTo" />
-        <activity
-            android:name=".Informacion"
-            android:label="@string/title_activity_informacion"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Info"></activity>
     </application>
 
 </manifest>
