@@ -41,6 +41,7 @@ public class Registro extends AppCompatActivity {
     private Button iniciar, iniciar2,intentar;
     public static String Usuario;
     public static String Contra;
+    public static int banderaPrimeraVez=0;
     public int banderaEmail = 0, banderaNombre = 0,banderaApellido = 0,banderaUsuario = 0, banderaContra = 0;
     public GifImageView gifImageView;
     public GifImageView gifImageView2;
@@ -50,6 +51,7 @@ public class Registro extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
+        banderaPrimeraVez=0;
         final Context context = this;
 
         nombre = (TextView)findViewById(R.id.txtnombre);
@@ -265,9 +267,13 @@ public class Registro extends AppCompatActivity {
                                         contra2.setVisibility(View.VISIBLE);
                                         email.setVisibility(View.VISIBLE);
 
-                                        Intent intent = new Intent(context, MainActivity.class);
+                                        //titulo.setVisibility(View.VISIBLE);
+                                        Toast.makeText(getApplicationContext(), "Registro agregado " + LoginActivity.idUsuario, Toast.LENGTH_SHORT).show();
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        banderaPrimeraVez=1;
+                                        Intent intent = new Intent(context, howTo.class);
+                                        finish();
                                         startActivity(intent);
                                     }
                                 }

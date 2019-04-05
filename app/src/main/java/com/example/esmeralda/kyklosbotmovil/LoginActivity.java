@@ -222,6 +222,7 @@ public class LoginActivity extends Activity {
                                         SharedPreferences.Editor editor = prefs.edit();
                                         editor.putString("id", idUsuario);
                                         editor.commit();
+                                        Registro.banderaPrimeraVez=0;
                                         Intent intent = new Intent(context, MainActivity.class);
                                         finish();
                                         startActivity(intent);

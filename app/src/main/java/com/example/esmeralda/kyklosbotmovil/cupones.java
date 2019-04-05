@@ -184,7 +184,7 @@ public class cupones extends AppCompatActivity {
                                 JSONArray myJsonArray = response.getJSONArray("puntosUsuario");
                                 JSONObject myJsonObject = myJsonArray.getJSONObject(0);
                                 puntosUsuario = myJsonObject.getString("Puntos");
-                                Toast.makeText(cupones.this, puntosUsuario, Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(cupones.this, puntosUsuario, Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -288,7 +288,7 @@ public class cupones extends AppCompatActivity {
                                     CardView carta = new CardView(getApplicationContext());
                                     FrameLayout.LayoutParams margenCartas = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 
-                                    margenCartas.setMargins(50,30,50,30);
+                                    margenCartas.setMargins(50,10,50,30);
                                     carta.setLayoutParams(margenCartas);
                                     carta.setCardElevation(15);
                                     carta.setRadius(1500);
@@ -316,7 +316,7 @@ public class cupones extends AppCompatActivity {
                                             break;
                                     }
                                     FrameLayout.LayoutParams margenImagen = new FrameLayout.LayoutParams(150, 150);
-                                    margenImagen.setMargins(10,30,10,0);
+                                    margenImagen.setMargins(0,30,10,0);
                                     imagen.setLayoutParams(margenImagen);
 
                                     //BASE PARA EL TEXTO DE LA CARTA
