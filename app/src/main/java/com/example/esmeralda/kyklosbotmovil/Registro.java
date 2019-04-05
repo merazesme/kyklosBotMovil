@@ -269,10 +269,10 @@ public class Registro extends AppCompatActivity {
 
                                         //titulo.setVisibility(View.VISIBLE);
                                         Toast.makeText(getApplicationContext(), "Registro agregado " + LoginActivity.idUsuario, Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(context, howTo.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         banderaPrimeraVez=1;
-                                        Intent intent = new Intent(context, howTo.class);
                                         finish();
                                         startActivity(intent);
                                     }
