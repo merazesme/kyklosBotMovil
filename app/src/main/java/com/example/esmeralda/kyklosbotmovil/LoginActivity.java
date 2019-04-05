@@ -122,6 +122,8 @@ public class LoginActivity extends Activity {
         String id = prefs.getString("id", "");
         if (id.length() != 0){
             Intent intent = new Intent(context, MainActivity.class);
+            LoginActivity.idUsuario = id;
+            finish();
             startActivity(intent);
         }
 
@@ -139,7 +141,7 @@ public class LoginActivity extends Activity {
                 String User = usuario.getText().toString();
                 String Contraa = contra.getText().toString();
                 if(User.length() != 0 && Contraa.length() != 0){
-                    if (banderaUsuario == 1 && banderaContra == 1) {
+                    if (isValidUsuario(usuario.getText().toString()) && isValidUsuario(contra.getText().toString()) ) {
                         banderaContra = 0; banderaUsuario = 0;
                         try {
                             InputStream inputStream = getAssets().open("loading.gif");
