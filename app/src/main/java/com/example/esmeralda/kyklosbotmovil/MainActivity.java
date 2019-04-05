@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         CardView leerQR = (CardView)findViewById(R.id.irLeerQR);
         CardView perfil = (CardView)findViewById(R.id.irPerfil);
         CardView info = (CardView)findViewById(R.id.irInformacion);
+        CardView irUbicacion = (CardView)findViewById(R.id.irUbicaciones);
 
         int permissionCheck2 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
 
@@ -43,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+
+        irUbicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Ubicacion = new Intent(getApplicationContext(), Ubicacion.class);
+                startActivity(Ubicacion);
+            }
+        });
 
         verCupones.setOnClickListener(new View.OnClickListener() {
             @Override

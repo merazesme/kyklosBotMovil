@@ -20,7 +20,6 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/SplashTheme">
-            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,9 +46,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBS1Ay_LSabB9IOx6oqBJ7SBAb9WaD5PFk" />
 
-        <activity android:name=".howTo" />
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Info"></activity>
+        <activity
+            android:name=".howTo"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Info"/>
     </application>
 
 </manifest>
