@@ -173,7 +173,7 @@
             android:paddingTop="20dp"
             android:textAlignment="textStart"
             android:textColor="@color/colorGray"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/txtCorreo"
@@ -183,7 +183,7 @@
             android:paddingTop="10dp"
             android:textAlignment="textStart"
             android:textColor="@color/colorGray"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
