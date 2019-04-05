@@ -12,9 +12,9 @@
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="KYKLOS_FINAL"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/ic_logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -32,19 +32,14 @@
         <activity android:name=".misCupones" />
         <activity android:name=".historialPuntosObtenidos" />
         <activity android:name=".historialPuntosCanjeados" />
-        <activity
-            android:name=".Registro"
-            android:label="REGISTRATE" />
-        <activity
-            android:name=".Ubicacion"
-            android:label="Map" />
+        <activity android:name=".Registro" />
+        <activity android:name=".Ubicacion" />
         <activity
             android:name=".LectorQR"
             android:noHistory="true" />
         <activity android:name=".Perfil" />
         <activity
-            android:name=".EditarPerfil"
-            android:parentActivityName=".Perfil" />
+            android:name=".EditarPerfil"/>
         <activity android:name=".Loading" />
         <activity android:name=".LectorQRespuesta" />
 
@@ -53,10 +48,8 @@
             android:value="AIzaSyBS1Ay_LSabB9IOx6oqBJ7SBAb9WaD5PFk" />
 
         <activity android:name=".howTo" />
-        <activity
-            android:name=".Informacion"
-            android:label="@string/title_activity_informacion"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Info"></activity>
     </application>
 
 </manifest>

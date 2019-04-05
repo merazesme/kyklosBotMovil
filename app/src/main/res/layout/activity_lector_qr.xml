@@ -4,8 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fondoqr"
+    android:background="@drawable/fondo"
     tools:context=".LectorQR">
+
+    <com.felipecsl.gifimageview.library.GifImageView
+        android:id="@+id/gifImageView"
+        android:layout_width="190dp"
+        android:layout_height="214dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="113dp"
+        android:scaleType="fitCenter"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.249" />
+
+    <com.felipecsl.gifimageview.library.GifImageView
+        android:id="@+id/gifImageView2"
+        android:layout_width="190dp"
+        android:layout_height="214dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="113dp"
+        android:scaleType="fitCenter"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.249" />
 
     <SurfaceView
         android:id="@+id/camerapreview"
@@ -34,6 +66,32 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:textColor="@color/white"/>
+
+
+    <Button
+        android:id="@+id/intentar"
+        android:layout_width="140dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_style"
+        android:onClick="intentar"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Intentar de nuevo"
+        android:textColor="@color/white"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.885" />
 
 </android.support.constraint.ConstraintLayout>

@@ -132,7 +132,12 @@ public class cupones extends AppCompatActivity {
                 Intent pantallahPuntosCanjeados = new Intent(this, historialPuntosCanjeados.class);
                 finish();
                 startActivity(pantallahPuntosCanjeados);
+            }else if (id == R.id.info)
+            {
+                Intent pantallaInformacion = new Intent(this, Info.class);
+                startActivity(pantallaInformacion);
             }
+
             else if (id == R.id.menuPrincipal)
             {
                 finish();

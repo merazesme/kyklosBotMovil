@@ -34,7 +34,6 @@ public class ProgressBarAnimation extends Animation {
     private float to;
     private int valueF;
     private String puntos;
-    private String idUsuario="3";
     private String resultado;
 
     public ProgressBarAnimation(Context context, ProgressBar progressBar, TextView textView, float from, float to, String puntos){
@@ -65,7 +64,7 @@ public class ProgressBarAnimation extends Animation {
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(context, "Response: " + response, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(context, "Response: " + response, Toast.LENGTH_LONG).show();
                         resultado=response;
                     }
                 }, new Response.ErrorListener() {
@@ -77,7 +76,7 @@ public class ProgressBarAnimation extends Animation {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<>();
-                        params.put("idUsuario", idUsuario);
+                        params.put("idUsuario", LoginActivity.idUsuario);
                         params.put("puntos", puntos);
                         return params;
                     }

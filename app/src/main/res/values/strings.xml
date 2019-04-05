@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Kyklos Bot</string>
-    <string name="title_activity_informacion">Informacion</string>
     <string name="tituloK">
         "Kyklos Bot\n\n"
     </string>
@@ -22,5 +21,4 @@
         "Fabiola Paez y Jesús Vizcarra. Esta es una empresa 100% mexicana, que brinda servicios de"
         "calidad a sus cliente.\n\n"
     </string>
-    <string name="action_settings">Settings</string>
 </resources>

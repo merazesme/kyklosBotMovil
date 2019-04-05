@@ -1,8 +1,12 @@
 package com.example.esmeralda.kyklosbotmovil;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -12,6 +16,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,11 +28,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.felipecsl.gifimageview.library.GifImageView;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +52,8 @@ public class EditarPerfil extends AppCompatActivity implements BottomSheetMenuFr
     private String nombreUsuarios;
     private String nombreUsuariosFinal[];
     private int lo=0;
+    private Intent ventana;
+    public Button intentar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +67,12 @@ public class EditarPerfil extends AppCompatActivity implements BottomSheetMenuFr
         txtContra=(TextView)findViewById(R.id.txtContra);
         foto=(ImageView) findViewById(R.id.imagenUsuario);
         salir=(TextView)findViewById(R.id.salir);
+
+        ventana = new Intent(this, Perfil.class);
+
+        intentar = (Button)findViewById(R.id.intentar);
+
+        intentar.setVisibility(View.GONE);
 
         try {
             Bundle bundle = getIntent().getExtras();
@@ -163,7 +180,7 @@ public class EditarPerfil extends AppCompatActivity implements BottomSheetMenuFr
     public void ponerImagen(String text){
         String uri;
         if(imagen.equals("1") || imagen.equals("")) {
-            uri = "@drawable/sinimagen";
+            uri = "@drawable/logo";
         }
         else {
             uri = "@drawable/"+text+"";
@@ -174,17 +191,17 @@ public class EditarPerfil extends AppCompatActivity implements BottomSheetMenuFr
         Drawable originalDrawable = ContextCompat.getDrawable(getApplicationContext(), imageResource);
         Bitmap originalBitmap = ((BitmapDrawable) originalDrawable).getBitmap();
 
-        if(imagen.equals("1") || imagen.equals("")) {
+        /*if(imagen.equals("1") || imagen.equals("")) {
             //creamos el drawable redondeado
             RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(), originalBitmap);
             //asignamos el CornerRadius
             roundedDrawable.setCornerRadius(originalBitmap.getHeight());
             //asigamos al imageview
             foto.setImageDrawable(roundedDrawable);
-        }
-        else {
+        }*/
+        //else {
             foto.setImageBitmap(originalBitmap);
-        }
+        //}
     }
 
     public void actualizarPerfil(){
@@ -192,32 +209,29 @@ public class EditarPerfil extends AppCompatActivity implements BottomSheetMenuFr
         try {
             //Actualizar perfil usuario
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-            String url ="http://tunas.mztzone.com/tunas/apiAdriana/actualizarPerfil/"+idUsuario+"";
+            String url = "http://tunas.mztzone.com/tunas/apiAdriana/actualizarPerfil/" + idUsuario + "";
             StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
-                    new Response.Listener<String>()
-                    {
+                    new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             // response
-                            Toast.makeText(getApplicationContext(),"Se actualizaron tus datos exitosamente!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Se actualizaron tus datos exitosamente!", Toast.LENGTH_LONG).show();
                             finish();
-                            //startActivity(ventana);
+                            startActivity(ventana);
                         }
                     },
-                    new Response.ErrorListener()
-                    {
+                    new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             // error
-                            Toast.makeText(getApplicationContext(),"Error", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
                         }
                     }
             ) {
 
                 @Override
-                protected Map<String, String> getParams()
-                {
-                    Map<String, String>  params = new HashMap<String, String>();
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<String, String>();
                     params.put("Nombre", txtNombre.getText().toString());
                     params.put("Apellidos", txtApellidos.getText().toString());
                     params.put("Correo", txtCorreo.getText().toString());
@@ -239,7 +253,7 @@ public class EditarPerfil extends AppCompatActivity implements BottomSheetMenuFr
 
     public void nombreUsuario(){
         try {
-            //Agarrar maquianas disponibles
+            //Agarrar maquinas disponibles
             RequestQueue queue = Volley.newRequestQueue(this);
             String url = "http://tunas.mztzone.com/tunas/apiAdriana/nombreUsuario";
 
@@ -253,13 +267,12 @@ public class EditarPerfil extends AppCompatActivity implements BottomSheetMenuFr
                                 JSONArray myJsonArray = response.getJSONArray("nombres");
                                 int a = myJsonArray.length();
                                 nombreUsuariosFinal = new String[a];
-                                for (int i=0; i<a; i++) {
+                                for (int i = 0; i < a; i++) {
                                     JSONObject myJsonObject = myJsonArray.getJSONObject(i);
                                     nombreUsuarios = myJsonObject.getString("Usuario");
                                     nombreUsuariosFinal[i] = new String(nombreUsuarios);
                                 }
-                                lo=nombreUsuariosFinal.length;
-                                Toast.makeText(getApplicationContext(),"Nombre usuarios: " + lo, Toast.LENGTH_LONG).show();
+                                lo = nombreUsuariosFinal.length;
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

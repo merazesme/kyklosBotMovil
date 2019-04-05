@@ -5,16 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Perfil"
-    android:orientation="vertical"
-    android:background="@drawable/fondo">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="405dp">
+        android:layout_height="325dp">
+
+        <com.felipecsl.gifimageview.library.GifImageView
+            android:id="@+id/gifImageView"
+            android:layout_width="190dp"
+            android:layout_height="214dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginTop="113dp"
+            android:scaleType="fitCenter"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.249" />
+
+        <com.felipecsl.gifimageview.library.GifImageView
+            android:id="@+id/gifImageView2"
+            android:layout_width="190dp"
+            android:layout_height="214dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginTop="113dp"
+            android:scaleType="fitCenter"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.249" />
 
         <LinearLayout
+            android:id="@+id/layout2"
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="280dp"
             android:background="@drawable/gradientbackground"
             android:orientation="vertical">
 
@@ -23,25 +55,50 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="45dp" />
+                android:layout_marginTop="25dp" />
 
             <TextView
                 android:id="@+id/txtUsuario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="3dp"
                 android:textColor="@color/white"
                 android:textSize="28sp"
                 android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/intentar"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/button_style"
+                android:onClick="intentar"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="Intentar de nuevo"
+                android:textColor="@color/white"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.885" />
+
         </LinearLayout>
 
         <android.support.v7.widget.CardView
-            android:layout_width="300dp"
-            android:layout_height="120dp"
+            android:id="@+id/card"
+            android:layout_width="298dp"
+            android:layout_height="106dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="275dp">
+            android:layout_marginTop="225dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -59,9 +116,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Botellas recicladas"
+                        android:text="Puntos actuales"
                         android:textAlignment="center"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/txtPuntos"
@@ -69,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
                         android:textAlignment="center"
-                        android:textColor="@color/secundario"
+                        android:textColor="@color/colorBlueAccent"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -86,7 +143,7 @@
                         android:layout_height="wrap_content"
                         android:text="Cupones canjeados"
                         android:textAlignment="center"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/txtCupones"
@@ -94,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
                         android:textAlignment="center"
-                        android:textColor="@color/secundario"
+                        android:textColor="@color/colorBlueAccent"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -103,7 +160,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="320dp"
+        android:layout_width="281dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
@@ -112,30 +169,31 @@
             android:id="@+id/txtNombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:textAlignment="textStart"
             android:drawableLeft="@drawable/user"
-            android:textColor="@color/secundario"
+            android:paddingTop="20dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorGray"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/txtCorreo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/email"
             android:paddingTop="10dp"
             android:textAlignment="textStart"
-            android:drawableLeft="@drawable/email"
-            android:textColor="@color/secundario"
+            android:textColor="@color/colorGray"
             android:textSize="20sp" />
 
     </LinearLayout>
 
     <Button
+        android:id="@+id/boton"
         android:layout_width="130dp"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="35dp"
-        android:background="@drawable/buttonstyleithgradient"
+        android:background="@drawable/button_style_orange"
         android:onClick="editarPerfil"
         android:text="Editar perfil"
         android:textColor="#fff" />
